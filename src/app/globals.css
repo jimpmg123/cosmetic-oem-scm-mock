@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-scm-primary: #000000;
+  --color-scm-secondary: #085ac0;
+  --color-scm-link: #0058be;
+  --color-scm-surface: #f8f9fa;
+  --color-scm-surface-lowest: #ffffff;
+  --color-scm-surface-container: #edeeef;
+  --color-scm-surface-container-low: #f3f4f5;
+  --color-scm-on-surface: #191c1d;
+  --color-scm-on-surface-variant: #4c4546;
+  --color-scm-outline-variant: #cfc4c5;
+  --color-scm-error: #ba1a1a;
+  --color-scm-warning-bg: #fff4e5;
+  --color-scm-warning-text: #663c00;
+  --color-scm-warning-border: #ffddbb;
+  --color-scm-success-bg: #e6f4ea;
+  --color-scm-success-text: #0d3c26;
+  --color-scm-success-border: #b7e1cd;
+  --color-scm-planned-bg: #e7e8e9;
+  --color-scm-planned-text: #4c4546;
+  /* Sidebar dark — #001A42보다 더 어두운 네이비 */
+  --color-nav-dark-bg: #000812;
+  --color-nav-dark-hover: #001028;
+  --color-nav-dark-active: #001534;
+  --color-nav-dark-border: #525252;
+  --color-nav-dark-muted: #9ca3af;
+  --color-nav-dark-text: #e5e7eb;
+  --color-nav-dark-icon: #d1d5db;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+* {
+  border-color: var(--color-scm-outline-variant);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  background-color: #f9fafb;
+  color: var(--color-scm-on-surface);
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}

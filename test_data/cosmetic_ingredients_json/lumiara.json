@@ -1,0 +1,454 @@
+[
+  {
+    "line": "Lumiara",
+    "manufacturerId": "mfr-yunhua",
+    "type": "Serum",
+    "name": "Radiance Renewal Serum",
+    "productVolume": {
+      "value": 30,
+      "unit": "ml"
+    },
+    "ingredients": [
+      {
+        "name": "Purified Water",
+        "percent": 58.0,
+        "amount": {
+          "value": 17.4,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Glycerin",
+        "percent": 8.0,
+        "amount": {
+          "value": 2.4,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Butylene Glycol",
+        "percent": 6.0,
+        "amount": {
+          "value": 1.8,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Niacinamide",
+        "percent": 5.0,
+        "amount": {
+          "value": 1.5,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Vitamin C Derivative",
+        "percent": 4.0,
+        "amount": {
+          "value": 1.2,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Hyaluronic Acid",
+        "percent": 1.5,
+        "amount": {
+          "value": 0.45,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Panthenol",
+        "percent": 2.0,
+        "amount": {
+          "value": 0.6,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Green Tea Extract",
+        "percent": 2.0,
+        "amount": {
+          "value": 0.6,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Adenosine",
+        "percent": 0.1,
+        "amount": {
+          "value": 0.03,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Allantoin",
+        "percent": 0.4,
+        "amount": {
+          "value": 0.12,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Propanediol",
+        "percent": 10.0,
+        "amount": {
+          "value": 3.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Preservative Blend",
+        "percent": 3.0,
+        "amount": {
+          "value": 0.9,
+          "unit": "ml"
+        }
+      }
+    ],
+    "totalPercent": 100.0,
+    "totalAmount": {
+      "value": 30.0,
+      "unit": "ml"
+    }
+  },
+  {
+    "line": "Lumiara",
+    "manufacturerId": "mfr-yunhua",
+    "type": "Toner",
+    "name": "Balance Refresh Toner",
+    "productVolume": {
+      "value": 150,
+      "unit": "ml"
+    },
+    "ingredients": [
+      {
+        "name": "Purified Water",
+        "percent": 76.0,
+        "amount": {
+          "value": 114.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Glycerin",
+        "percent": 5.0,
+        "amount": {
+          "value": 7.5,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Butylene Glycol",
+        "percent": 4.0,
+        "amount": {
+          "value": 6.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Propanediol",
+        "percent": 4.0,
+        "amount": {
+          "value": 6.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Niacinamide",
+        "percent": 3.0,
+        "amount": {
+          "value": 4.5,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Chamomile Extract",
+        "percent": 2.0,
+        "amount": {
+          "value": 3.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Betaine",
+        "percent": 2.0,
+        "amount": {
+          "value": 3.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Panthenol",
+        "percent": 1.5,
+        "amount": {
+          "value": 2.25,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Hyaluronic Acid",
+        "percent": 0.8,
+        "amount": {
+          "value": 1.2,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Allantoin",
+        "percent": 0.2,
+        "amount": {
+          "value": 0.3,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Citric Acid",
+        "percent": 0.3,
+        "amount": {
+          "value": 0.45,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Preservative Blend",
+        "percent": 1.2,
+        "amount": {
+          "value": 1.8,
+          "unit": "ml"
+        }
+      }
+    ],
+    "totalPercent": 100.0,
+    "totalAmount": {
+      "value": 150.0,
+      "unit": "ml"
+    }
+  },
+  {
+    "line": "Lumiara",
+    "manufacturerId": "mfr-yunhua",
+    "type": "Ampoule",
+    "name": "Radiance Concentrate Ampoule",
+    "productVolume": {
+      "value": 15,
+      "unit": "ml"
+    },
+    "ingredients": [
+      {
+        "name": "Purified Water",
+        "percent": 54.0,
+        "amount": {
+          "value": 8.1,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Glycerin",
+        "percent": 10.0,
+        "amount": {
+          "value": 1.5,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Butylene Glycol",
+        "percent": 6.0,
+        "amount": {
+          "value": 0.9,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Niacinamide",
+        "percent": 7.0,
+        "amount": {
+          "value": 1.05,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Vitamin C Derivative",
+        "percent": 5.0,
+        "amount": {
+          "value": 0.75,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Hyaluronic Acid",
+        "percent": 2.0,
+        "amount": {
+          "value": 0.3,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Panthenol",
+        "percent": 3.0,
+        "amount": {
+          "value": 0.45,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Licorice Root Extract",
+        "percent": 2.0,
+        "amount": {
+          "value": 0.3,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Tocopherol",
+        "percent": 0.8,
+        "amount": {
+          "value": 0.12,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Adenosine",
+        "percent": 0.1,
+        "amount": {
+          "value": 0.015,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Propanediol",
+        "percent": 8.0,
+        "amount": {
+          "value": 1.2,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Preservative Blend",
+        "percent": 2.1,
+        "amount": {
+          "value": 0.315,
+          "unit": "ml"
+        }
+      }
+    ],
+    "totalPercent": 100.0,
+    "totalAmount": {
+      "value": 15.0,
+      "unit": "ml"
+    }
+  },
+  {
+    "line": "Lumiara",
+    "manufacturerId": "mfr-yunhua",
+    "type": "Lotion",
+    "name": "Soft Glow Lotion",
+    "productVolume": {
+      "value": 150,
+      "unit": "ml"
+    },
+    "ingredients": [
+      {
+        "name": "Purified Water",
+        "percent": 53.0,
+        "amount": {
+          "value": 79.5,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Glycerin",
+        "percent": 6.0,
+        "amount": {
+          "value": 9.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Caprylic/Capric Triglyceride",
+        "percent": 8.0,
+        "amount": {
+          "value": 12.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Cetearyl Alcohol",
+        "percent": 5.0,
+        "amount": {
+          "value": 7.5,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Squalane",
+        "percent": 4.0,
+        "amount": {
+          "value": 6.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Shea Butter",
+        "percent": 4.0,
+        "amount": {
+          "value": 6.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Niacinamide",
+        "percent": 3.0,
+        "amount": {
+          "value": 4.5,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Vitamin E",
+        "percent": 1.0,
+        "amount": {
+          "value": 1.5,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Hyaluronic Acid",
+        "percent": 0.5,
+        "amount": {
+          "value": 0.75,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Panthenol",
+        "percent": 2.0,
+        "amount": {
+          "value": 3.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Propanediol",
+        "percent": 10.0,
+        "amount": {
+          "value": 15.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Preservative Blend",
+        "percent": 3.5,
+        "amount": {
+          "value": 5.25,
+          "unit": "ml"
+        }
+      }
+    ],
+    "totalPercent": 100.0,
+    "totalAmount": {
+      "value": 150.0,
+      "unit": "ml"
+    }
+  }
+]

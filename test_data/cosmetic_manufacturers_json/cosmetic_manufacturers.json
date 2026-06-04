@@ -1,0 +1,23 @@
+[
+  {
+    "id": "mfr-yunhua",
+    "manufacturerName": "Yunhua BioLab",
+    "chineseName": "云华生物实验室",
+    "concept": "advanced bio-based skincare manufacturing line focused on premium hydration, radiance, and marine-derived active formulas",
+    "lines": ["Aevora", "Lumiara"]
+  },
+  {
+    "id": "mfr-lianxi",
+    "manufacturerName": "Lianxi DermaWorks",
+    "chineseName": "莲溪护肤工坊",
+    "concept": "natural botanical skincare manufacturing line focused on calming, cica care, and sensitive-skin barrier support",
+    "lines": ["Verdena", "Solenne Atelier"]
+  },
+  {
+    "id": "mfr-qinglan",
+    "manufacturerName": "Qinglan CosmeTech",
+    "chineseName": "清岚美研科技",
+    "concept": "clean cosmetic technology manufacturer focused on lightweight daily skincare, gentle formulas, and modern minimalist packaging",
+    "lines": []
+  }
+]

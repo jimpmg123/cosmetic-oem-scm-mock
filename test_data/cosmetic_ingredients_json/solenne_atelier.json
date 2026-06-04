@@ -1,0 +1,462 @@
+[
+  {
+    "line": "Solenne Atelier",
+    "manufacturerId": "mfr-lianxi",
+    "type": "Serum",
+    "name": "Rose Quartz Serum",
+    "productVolume": {
+      "value": 40,
+      "unit": "ml"
+    },
+    "ingredients": [
+      {
+        "name": "Purified Water",
+        "percent": 53.0,
+        "amount": {
+          "value": 21.2,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Rose Water",
+        "percent": 8.0,
+        "amount": {
+          "value": 3.2,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Glycerin",
+        "percent": 7.0,
+        "amount": {
+          "value": 2.8,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Butylene Glycol",
+        "percent": 6.0,
+        "amount": {
+          "value": 2.4,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Propanediol",
+        "percent": 5.0,
+        "amount": {
+          "value": 2.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Niacinamide",
+        "percent": 5.0,
+        "amount": {
+          "value": 2.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Peptide Complex",
+        "percent": 3.0,
+        "amount": {
+          "value": 1.2,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Panthenol",
+        "percent": 2.0,
+        "amount": {
+          "value": 0.8,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Hyaluronic Acid",
+        "percent": 2.0,
+        "amount": {
+          "value": 0.8,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Peony Extract",
+        "percent": 1.0,
+        "amount": {
+          "value": 0.4,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Allantoin",
+        "percent": 0.5,
+        "amount": {
+          "value": 0.2,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Preservative Blend",
+        "percent": 7.5,
+        "amount": {
+          "value": 3.0,
+          "unit": "ml"
+        }
+      }
+    ],
+    "totalPercent": 100.0,
+    "totalAmount": {
+      "value": 40.0,
+      "unit": "ml"
+    }
+  },
+  {
+    "line": "Solenne Atelier",
+    "manufacturerId": "mfr-lianxi",
+    "type": "Toner",
+    "name": "Rose Quartz Toner",
+    "productVolume": {
+      "value": 180,
+      "unit": "ml"
+    },
+    "ingredients": [
+      {
+        "name": "Purified Water",
+        "percent": 63.5,
+        "amount": {
+          "value": 114.3,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Rose Water",
+        "percent": 12.0,
+        "amount": {
+          "value": 21.6,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Glycerin",
+        "percent": 5.0,
+        "amount": {
+          "value": 9.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Butylene Glycol",
+        "percent": 4.0,
+        "amount": {
+          "value": 7.2,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Propanediol",
+        "percent": 4.0,
+        "amount": {
+          "value": 7.2,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Betaine",
+        "percent": 3.0,
+        "amount": {
+          "value": 5.4,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Peony Extract",
+        "percent": 2.0,
+        "amount": {
+          "value": 3.6,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Panthenol",
+        "percent": 2.0,
+        "amount": {
+          "value": 3.6,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Allantoin",
+        "percent": 0.5,
+        "amount": {
+          "value": 0.9,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Niacinamide",
+        "percent": 1.0,
+        "amount": {
+          "value": 1.8,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Citric Acid",
+        "percent": 0.3,
+        "amount": {
+          "value": 0.54,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Preservative Blend",
+        "percent": 2.7,
+        "amount": {
+          "value": 4.86,
+          "unit": "ml"
+        }
+      }
+    ],
+    "totalPercent": 100.0,
+    "totalAmount": {
+      "value": 180.0,
+      "unit": "ml"
+    }
+  },
+  {
+    "line": "Solenne Atelier",
+    "manufacturerId": "mfr-lianxi",
+    "type": "Ampoule",
+    "name": "Rose Quartz Ampoule",
+    "productVolume": {
+      "value": 20,
+      "unit": "ml"
+    },
+    "ingredients": [
+      {
+        "name": "Purified Water",
+        "percent": 49.0,
+        "amount": {
+          "value": 9.8,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Rose Water",
+        "percent": 10.0,
+        "amount": {
+          "value": 2.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Glycerin",
+        "percent": 8.0,
+        "amount": {
+          "value": 1.6,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Butylene Glycol",
+        "percent": 6.0,
+        "amount": {
+          "value": 1.2,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Propanediol",
+        "percent": 5.0,
+        "amount": {
+          "value": 1.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Peptide Complex",
+        "percent": 4.0,
+        "amount": {
+          "value": 0.8,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Ceramide NP",
+        "percent": 2.0,
+        "amount": {
+          "value": 0.4,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Rose Stem Cell Extract",
+        "percent": 2.0,
+        "amount": {
+          "value": 0.4,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Panthenol",
+        "percent": 2.0,
+        "amount": {
+          "value": 0.4,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Allantoin",
+        "percent": 0.5,
+        "amount": {
+          "value": 0.1,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Adenosine",
+        "percent": 0.1,
+        "amount": {
+          "value": 0.02,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Preservative Blend",
+        "percent": 11.4,
+        "amount": {
+          "value": 2.28,
+          "unit": "ml"
+        }
+      }
+    ],
+    "totalPercent": 100.0,
+    "totalAmount": {
+      "value": 20.0,
+      "unit": "ml"
+    }
+  },
+  {
+    "line": "Solenne Atelier",
+    "manufacturerId": "mfr-lianxi",
+    "type": "Cream",
+    "name": "Rose Quartz Cream",
+    "productVolume": {
+      "value": 50,
+      "unit": "ml"
+    },
+    "ingredients": [
+      {
+        "name": "Purified Water",
+        "percent": 40.0,
+        "amount": {
+          "value": 20.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Rose Water",
+        "percent": 8.0,
+        "amount": {
+          "value": 4.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Glycerin",
+        "percent": 6.0,
+        "amount": {
+          "value": 3.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Caprylic/Capric Triglyceride",
+        "percent": 8.0,
+        "amount": {
+          "value": 4.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Cetearyl Alcohol",
+        "percent": 5.0,
+        "amount": {
+          "value": 2.5,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Squalane",
+        "percent": 5.0,
+        "amount": {
+          "value": 2.5,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Shea Butter",
+        "percent": 5.0,
+        "amount": {
+          "value": 2.5,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Propanediol",
+        "percent": 4.0,
+        "amount": {
+          "value": 2.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Peptide Complex",
+        "percent": 3.0,
+        "amount": {
+          "value": 1.5,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Rose Ceramide",
+        "percent": 2.0,
+        "amount": {
+          "value": 1.0,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Panthenol",
+        "percent": 1.5,
+        "amount": {
+          "value": 0.75,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Allantoin",
+        "percent": 0.5,
+        "amount": {
+          "value": 0.25,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "Preservative Blend",
+        "percent": 12.0,
+        "amount": {
+          "value": 6.0,
+          "unit": "ml"
+        }
+      }
+    ],
+    "totalPercent": 100.0,
+    "totalAmount": {
+      "value": 50.0,
+      "unit": "ml"
+    }
+  }
+]
