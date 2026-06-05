@@ -1,5 +1,7 @@
 /** A 브랜드 라인 · 제품 · BOM · 재료 요청 (mock) */
 
+import type { UserRole } from "@/lib/mock/data";
+
 export type CosmeticType =
   | "lotion"
   | "toner"
@@ -121,6 +123,10 @@ export type MaterialRequest = {
   comment?: string;
   /** A 통지 출하 */
   notifyMessage?: string;
+  /** 완제품 목표 개수 (통지 출하·승인 한도) */
+  targetFinishedQty?: number;
+  /** 작성자 A 역할 */
+  authorRole?: UserRole;
   /** B 생산 배치 */
   productionItems?: ProductionRequestItem[];
   defaultYieldPct?: number;
@@ -149,6 +155,50 @@ export const INITIAL_CATALOG_PRODUCTS: CatalogProduct[] = INITIAL_CATALOG_FROM_S
 const _mfrLianxi = getManufacturerById(INITIAL_MANUFACTURERS, "mfr-lianxi")!;
 
 export const INITIAL_MATERIAL_REQUESTS: MaterialRequest[] = [
+  {
+    id: "req-push-super",
+    number: "MR-2026-P01",
+    type: "a_push",
+    status: "submitted",
+    createdAt: "2026-06-01T09:00:00Z",
+    createdBy: "A Super Admin",
+    authorRole: "super_admin",
+    manufacturerId: _mfrLianxi.id,
+    manufacturerName: _mfrLianxi.name,
+    targetFinishedQty: 1000,
+    notifyMessage: "6월 세럼 1,000개분 원료 발송 예정",
+    lines: [
+      {
+        id: "pl-1",
+        itemCode: "RM-WATER",
+        itemName: "정제수",
+        unit: "L",
+        qty: 200,
+      },
+    ],
+  },
+  {
+    id: "req-push-admin-draft",
+    number: "MR-2026-P02",
+    type: "a_push",
+    status: "draft",
+    createdAt: "2026-06-03T11:00:00Z",
+    createdBy: "A Admin",
+    authorRole: "a_admin",
+    manufacturerId: _mfrLianxi.id,
+    manufacturerName: _mfrLianxi.name,
+    targetFinishedQty: 800,
+    notifyMessage: "토너 보충분 — draft (Super 발행 대기)",
+    lines: [
+      {
+        id: "pl-2",
+        itemCode: "RM-TONER-ACT",
+        itemName: "토너 액상",
+        unit: "kg",
+        qty: 350,
+      },
+    ],
+  },
   {
     id: "req-001",
     number: "MR-2026-001",

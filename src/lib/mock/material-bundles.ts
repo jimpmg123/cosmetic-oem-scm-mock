@@ -23,8 +23,13 @@ export type DirectiveStatus =
 export interface MaterialBundle {
   id: string;
   number: string;
+  /** 카탈로그 제품 id */
+  productId: string;
+  /** 카탈로그 제품 코드 (예: AEVO-SER-01). legacy 필드명 sku 유지 */
   sku: string;
   productName: string;
+  /** 브랜드 라인명 (표시용) */
+  lineName?: string;
   theoreticalQty: number;
   targetQty: number;
   /** A 발송 기준량 (로스 여유 포함). 예: 목표 1000 + 로스 100 → 1100 */
@@ -104,18 +109,12 @@ export interface BundleShipmentToC {
   shippedAt: string;
 }
 
-export interface SkuOption {
+/** @deprecated 카탈로그 제품 사용 — bundle-product.ts 참고 */
+export type SkuOption = {
   sku: string;
   productName: string;
   theoreticalQty: number;
-}
-
-export const SKU_OPTIONS: SkuOption[] = [
-  { sku: "SERUM-50", productName: "Hydrating Serum 50ml", theoreticalQty: 1200 },
-  { sku: "TONER-200", productName: "Calming Toner 200ml", theoreticalQty: 900 },
-  { sku: "CREAM-30", productName: "Moisture Cream 30ml", theoreticalQty: 600 },
-  { sku: "LOTION-250", productName: "Moisture Lotion 250ml", theoreticalQty: 5450 },
-];
+};
 
 /** B 위탁 생산사 (test_data/cosmetic_manufacturers_json) */
 export const VENDORS = INITIAL_MANUFACTURERS.map((m) => ({
@@ -128,8 +127,10 @@ export const INITIAL_MATERIAL_BUNDLES: MaterialBundle[] = [
   {
     id: "mb-2026-001",
     number: "MB-2026-001",
-    sku: "SERUM-50",
-    productName: "Hydrating Serum 50ml",
+    productId: "prod-aevora-serum",
+    sku: "AEVO-SER-01",
+    productName: "Hydra Marine Serum",
+    lineName: "Aevora",
     theoreticalQty: 1200,
     targetQty: 1000,
     grantQty: 1100,
@@ -153,8 +154,10 @@ export const INITIAL_MATERIAL_BUNDLES: MaterialBundle[] = [
   {
     id: "mb-2026-002",
     number: "MB-2026-002",
-    sku: "TONER-200",
-    productName: "Calming Toner 200ml",
+    productId: "prod-lumiara-toner",
+    sku: "LUMI-TON-01",
+    productName: "Balance Refresh Toner",
+    lineName: "Lumiara",
     theoreticalQty: 900,
     targetQty: 800,
     useFromDate: "2026-05-15",
@@ -176,8 +179,10 @@ export const INITIAL_MATERIAL_BUNDLES: MaterialBundle[] = [
   {
     id: "mb-2026-004",
     number: "MB-2026-004",
-    sku: "LOTION-250",
-    productName: "Moisture Lotion 250ml",
+    productId: "prod-aevora-lotion",
+    sku: "AEVO-LOT-01",
+    productName: "Hydra Marine Lotion",
+    lineName: "Aevora",
     theoreticalQty: 5450,
     targetQty: 8000,
     useFromDate: "2026-04-01",
@@ -199,13 +204,15 @@ export const INITIAL_MATERIAL_BUNDLES: MaterialBundle[] = [
   {
     id: "mb-2026-003",
     number: "MB-2026-003",
-    sku: "CREAM-30",
-    productName: "Moisture Cream 30ml",
+    productId: "prod-solenne-atelier-cream",
+    sku: "SOLN-CRM-01",
+    productName: "Rose Quartz Cream",
+    lineName: "Solenne Atelier",
     theoreticalQty: 600,
     targetQty: 500,
     useByDate: "2026-12-01",
-    vendorId: "mfr-qinglan",
-    vendorName: "Qinglan CosmeTech",
+    vendorId: "mfr-lianxi",
+    vendorName: "Lianxi DermaWorks",
     internalNote: "Q4 신규 라인 테스트",
     status: "planned",
     producedTotal: 0,
@@ -252,7 +259,7 @@ export const INITIAL_DIRECTIVES: PeriodDirective[] = [
     bundleId: "mb-2026-004",
     dueDate: "2026-07-10",
     targetQty: 8000,
-    comment: "Q2 메인 묶음 — 캘린더 지시기간 검증 (4/10~7/10)",
+    comment: "Q2 메인 물량 — 캘린더 지시기간 검증 (4/10~7/10)",
     status: "in_progress",
     issuedAt: "2026-04-10",
     issuedBy: "Super Admin",

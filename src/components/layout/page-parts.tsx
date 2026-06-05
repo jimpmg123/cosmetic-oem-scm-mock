@@ -1,3 +1,6 @@
+"use client";
+
+import { useLocale } from "@/components/providers/locale-provider";
 import { cn } from "@/lib/utils";
 
 export function PageHeader({
@@ -25,7 +28,7 @@ export function PageHeader({
 export function DataTable({
   columns,
   rows,
-  emptyMessage = "데이터가 없습니다.",
+  emptyMessage,
 }: {
   columns: {
     key: string;
@@ -36,10 +39,13 @@ export function DataTable({
   rows: Record<string, React.ReactNode>[];
   emptyMessage?: string;
 }) {
+  const { t } = useLocale();
+  const empty = emptyMessage ?? t("common.empty");
+
   if (rows.length === 0) {
     return (
       <div className="rounded-md border border-border bg-card p-10 text-center text-base text-muted-foreground">
-        {emptyMessage}
+        {empty}
       </div>
     );
   }

@@ -27,6 +27,7 @@ import {
   type ProductBomLine,
   type ProductionRequestItem,
 } from "@/lib/mock/product-catalog";
+import type { UserRole } from "@/lib/mock/data";
 
 type CreateLineInput = {
   code: string;
@@ -68,6 +69,17 @@ type CatalogStoreValue = {
     createdBy: string;
     manufacturerId: string;
   }) => string;
+  savePushNotice: (input: {
+    id?: string;
+    manufacturerId: string;
+    targetFinishedQty: number;
+    notifyMessage: string;
+    lines: MaterialRequestLine[];
+    authorRole: UserRole;
+    createdBy: string;
+    publish?: boolean;
+  }) => string;
+  publishPushNotice: (id: string) => void;
   updateRequestStatus: (
     id: string,
     status: MaterialRequest["status"],
@@ -214,6 +226,76 @@ export function CatalogStoreProvider({ children }: { children: ReactNode }) {
     [materialRequests],
   );
 
+  const savePushNotice = useCallback(
+    (input: {
+      id?: string;
+      manufacturerId: string;
+      targetFinishedQty: number;
+      notifyMessage: string;
+      lines: MaterialRequestLine[];
+      authorRole: UserRole;
+      createdBy: string;
+      publish?: boolean;
+    }) => {
+      const mfr = INITIAL_MANUFACTURERS.find(
+        (m: ManufacturingCompany) => m.id === input.manufacturerId,
+      );
+      if (!mfr) throw new Error("Unknown manufacturer");
+
+      const publishNow =
+        input.publish === true ||
+        (input.authorRole === "super_admin" && input.publish !== false);
+
+      if (input.id) {
+        setMaterialRequests((prev) =>
+          prev.map((r) => {
+            if (r.id !== input.id || r.type !== "a_push") return r;
+            return {
+              ...r,
+              manufacturerId: mfr.id,
+              manufacturerName: mfr.name,
+              targetFinishedQty: input.targetFinishedQty,
+              notifyMessage: input.notifyMessage,
+              lines: input.lines,
+              status: publishNow ? "submitted" : r.status,
+            };
+          }),
+        );
+        return input.id;
+      }
+
+      const id = `req-${Date.now()}`;
+      const number = nextRequestNumber(materialRequests);
+      const row: MaterialRequest = {
+        id,
+        number,
+        type: "a_push",
+        status: publishNow ? "submitted" : "draft",
+        createdAt: new Date().toISOString(),
+        createdBy: input.createdBy,
+        authorRole: input.authorRole,
+        manufacturerId: mfr.id,
+        manufacturerName: mfr.name,
+        lines: input.lines,
+        notifyMessage: input.notifyMessage,
+        targetFinishedQty: input.targetFinishedQty,
+      };
+      setMaterialRequests((prev) => [row, ...prev]);
+      return id;
+    },
+    [materialRequests],
+  );
+
+  const publishPushNotice = useCallback((id: string) => {
+    setMaterialRequests((prev) =>
+      prev.map((r) =>
+        r.id === id && r.type === "a_push" && r.status === "draft"
+          ? { ...r, status: "submitted" }
+          : r,
+      ),
+    );
+  }, []);
+
   const updateRequestStatus = useCallback(
     (id: string, status: MaterialRequest["status"]) => {
       setMaterialRequests((prev) =>
@@ -236,6 +318,8 @@ export function CatalogStoreProvider({ children }: { children: ReactNode }) {
       getLine,
       getProduct,
       submitMaterialRequest,
+      savePushNotice,
+      publishPushNotice,
       updateRequestStatus,
     }),
     [
@@ -250,6 +334,8 @@ export function CatalogStoreProvider({ children }: { children: ReactNode }) {
       getLine,
       getProduct,
       submitMaterialRequest,
+      savePushNotice,
+      publishPushNotice,
       updateRequestStatus,
     ],
   );

@@ -10,6 +10,7 @@ import {
 } from "react";
 import {
   type Locale,
+  type TranslationParams,
   t as translate,
   LOCALE_LABELS,
 } from "@/lib/i18n/translations";
@@ -17,7 +18,7 @@ import {
 type LocaleContextValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: string) => string;
+  t: (key: string, params?: TranslationParams) => string;
   localeLabels: typeof LOCALE_LABELS;
 };
 
@@ -26,7 +27,10 @@ const LocaleContext = createContext<LocaleContextValue | null>(null);
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>("ko");
 
-  const t = useCallback((key: string) => translate(locale, key), [locale]);
+  const t = useCallback(
+    (key: string, params?: TranslationParams) => translate(locale, key, params),
+    [locale],
+  );
 
   const value = useMemo(
     () => ({ locale, setLocale, t, localeLabels: LOCALE_LABELS }),

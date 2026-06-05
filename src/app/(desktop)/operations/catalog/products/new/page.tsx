@@ -8,17 +8,15 @@ import { Button } from "@/components/ui/button";
 import { useLocale } from "@/components/providers/locale-provider";
 import { useCatalogStore } from "@/components/providers/catalog-store-provider";
 import { ProductThumbnail } from "@/components/catalog/product-thumbnail";
+import { COSMETIC_TYPES, getCosmeticTypeLabel } from "@/lib/i18n/catalog-labels";
 import {
-  COSMETIC_TYPE_LABELS,
   suggestProductCode,
   type CosmeticType,
   type ProductBomLine,
 } from "@/lib/mock/product-catalog";
 
-const COSMETIC_TYPES = Object.keys(COSMETIC_TYPE_LABELS) as CosmeticType[];
-
 export default function NewCatalogProductPage() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const router = useRouter();
   const { brandLines, products, addProduct } = useCatalogStore();
 
@@ -125,7 +123,7 @@ export default function NewCatalogProductPage() {
               >
                 {COSMETIC_TYPES.map((ct) => (
                   <option key={ct} value={ct}>
-                    {COSMETIC_TYPE_LABELS[ct]}
+                    {getCosmeticTypeLabel(locale, ct)}
                   </option>
                 ))}
               </select>

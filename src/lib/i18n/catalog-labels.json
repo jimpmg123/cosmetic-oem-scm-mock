@@ -1,0 +1,13 @@
+{
+  "cosmeticType": {
+    "lotion": { "ko": "로션", "en": "Lotion", "zh": "乳液" },
+    "toner": { "ko": "토너", "en": "Toner", "zh": "爽肤水" },
+    "serum": { "ko": "세럼", "en": "Serum", "zh": "精华" },
+    "ampoule": { "ko": "앰플", "en": "Ampoule", "zh": "安瓶" },
+    "cream": { "ko": "크림", "en": "Cream", "zh": "面霜" },
+    "lipstick": { "ko": "립스틱", "en": "Lipstick", "zh": "口红" },
+    "mascara": { "ko": "마스카라", "en": "Mascara", "zh": "睫毛膏" },
+    "cleanser": { "ko": "클렌저", "en": "Cleanser", "zh": "洁面" },
+    "other": { "ko": "기타", "en": "Other", "zh": "其他" }
+  }
+}

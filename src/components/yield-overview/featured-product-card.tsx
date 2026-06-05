@@ -10,8 +10,9 @@ import {
 import { DashboardCard, StatCard } from "@/components/ui/dashboard-card";
 import { MaterialIcon } from "@/components/ui/material-icon";
 import { useLocale } from "@/components/providers/locale-provider";
-import { formatPct, type MaterialBundle } from "@/lib/mock/material-bundles";
+import { formatBundleProductLabel } from "@/lib/catalog/bundle-product";
 import { getBundleSummaryDonutMetrics } from "@/lib/mock/bundle-metric-display";
+import { formatPct, type MaterialBundle } from "@/lib/mock/material-bundles";
 import {
   calcBundleInboundAchievement,
   calcBundleOverallAchievement,
@@ -60,7 +61,7 @@ export function FeaturedProductYieldCard({
                 {bundle.productName}
               </h2>
               <p className="mt-0.5 text-sm text-scm-on-surface-variant">
-                {bundle.sku} · {bundle.number} · {bundle.vendorName}
+                {formatBundleProductLabel(bundle)} · {bundle.number} · {bundle.vendorName}
               </p>
             </div>
           </button>

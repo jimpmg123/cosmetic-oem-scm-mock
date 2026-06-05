@@ -119,7 +119,8 @@ export default function CommandCenterPage() {
             ) : (
               bundlesForSku.map((b) => (
                 <option key={b.id} value={b.id}>
-                  {b.number} · {t(`bundle.status.${b.status}`)} · 목표{" "}
+                  {b.number} · {t(`bundle.status.${b.status}`)} ·{" "}
+                  {t("commandCenter.bundleTarget")}{" "}
                   {b.targetQty.toLocaleString()}
                 </option>
               ))
@@ -180,7 +181,7 @@ export default function CommandCenterPage() {
                 {bundle.theoreticalQty.toLocaleString()}
               </p>
               <p className="text-xs text-scm-on-surface-variant">
-                BOM 기준 (1회 grant)
+                {t("commandCenter.bomGrantHint")}
               </p>
             </div>
             {directive && analytics ? (

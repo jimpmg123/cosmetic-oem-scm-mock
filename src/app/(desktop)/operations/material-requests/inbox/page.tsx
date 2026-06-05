@@ -5,6 +5,9 @@ import Link from "next/link";
 import { PageHeader } from "@/components/layout/page-parts";
 import { useLocale } from "@/components/providers/locale-provider";
 import { useCatalogStore } from "@/components/providers/catalog-store-provider";
+import { useAAdminPolicy } from "@/components/providers/a-admin-policy-provider";
+import { useRole } from "@/components/providers/role-provider";
+import { canApproveMaterialRequest } from "@/lib/a-admin-permissions";
 import type { MaterialRequestType } from "@/lib/mock/product-catalog";
 
 const TYPE_LABEL: Record<MaterialRequestType, string> = {
@@ -15,6 +18,8 @@ const TYPE_LABEL: Record<MaterialRequestType, string> = {
 
 export default function MaterialRequestsInboxPage() {
   const { t } = useLocale();
+  const { role } = useRole();
+  const { policy } = useAAdminPolicy();
   const { materialRequests, updateRequestStatus } = useCatalogStore();
   const [filter, setFilter] = useState<MaterialRequestType | "all">("all");
 
@@ -107,14 +112,20 @@ export default function MaterialRequestsInboxPage() {
                   </p>
                 </td>
                 <td className="px-3 py-2">
-                  {r.status === "submitted" ? (
-                    <button
-                      type="button"
-                      className="text-scm-link text-xs font-medium"
-                      onClick={() => updateRequestStatus(r.id, "approved")}
-                    >
-                      {t("req.action.approve")}
-                    </button>
+                  {r.status === "submitted" && r.type !== "a_push" ? (
+                    canApproveMaterialRequest(role, r, policy) ? (
+                      <button
+                        type="button"
+                        className="text-scm-link text-xs font-medium"
+                        onClick={() => updateRequestStatus(r.id, "approved")}
+                      >
+                        {t("req.action.approve")}
+                      </button>
+                    ) : (
+                      <span className="text-xs text-scm-on-surface-variant">
+                        {t("req.inbox.superOnly")}
+                      </span>
+                    )
                   ) : null}
                 </td>
               </tr>

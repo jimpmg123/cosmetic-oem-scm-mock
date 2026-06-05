@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { NavHintTooltip } from "@/components/layout/nav-hint-tooltip";
 import { RoleMenu, getRoleLevelKey } from "@/components/layout/role-menu";
 import { useSidebarLayout } from "@/components/layout/sidebar-layout-context";
 import { HubBrandIcon } from "@/components/ui/hub-brand-icon";
 import { MaterialIcon } from "@/components/ui/material-icon";
 import { useLocale } from "@/components/providers/locale-provider";
 import { useRole } from "@/components/providers/role-provider";
+import { navHintKey } from "@/lib/navigation-hints";
 import {
   NAV_SECTIONS,
   flattenNavTree,
@@ -57,6 +59,7 @@ const NavLink = memo(function NavLink({
   item,
   active,
   label,
+  hint,
   collapsed,
   dark,
   nested,
@@ -64,11 +67,12 @@ const NavLink = memo(function NavLink({
   item: NavItem;
   active: boolean;
   label: string;
+  hint?: string;
   collapsed: boolean;
   dark: boolean;
   nested?: boolean;
 }) {
-  return (
+  const link = (
     <Link
       href={item.href}
       prefetch
@@ -77,7 +81,7 @@ const NavLink = memo(function NavLink({
         "my-0.5 flex cursor-pointer items-center rounded-lg transition-colors duration-300",
         collapsed
           ? "mx-auto h-10 w-10 justify-center"
-          : cn("h-9 w-full", nested ? "pl-9 pr-3" : "h-10 px-3"),
+          : cn("h-9 w-full", nested ? "pl-4 pr-2" : "h-10 px-3"),
         active
           ? dark
             ? "bg-nav-dark-active font-semibold text-nav-dark-text"
@@ -93,11 +97,19 @@ const NavLink = memo(function NavLink({
         className={cn("shrink-0", nested ? "text-[18px]" : "text-[20px]")}
       />
       {!collapsed ? (
-        <span className={cn("ml-3 truncate", nested ? "text-[13px]" : "text-sm")}>
+        <span
+          className={cn("truncate", nested ? "ml-2 text-[13px]" : "ml-3 text-sm")}
+        >
           {label}
         </span>
       ) : null}
     </Link>
+  );
+
+  return (
+    <NavHintTooltip hint={hint} side={collapsed ? "right" : "right"} className={collapsed ? "" : "w-full"}>
+      {link}
+    </NavHintTooltip>
   );
 });
 
@@ -105,6 +117,7 @@ function NavGroupBlock({
   group,
   pathname,
   labels,
+  hints,
   collapsed,
   dark,
   open,
@@ -113,6 +126,7 @@ function NavGroupBlock({
   group: NavTreeGroup;
   pathname: string;
   labels: Record<string, string>;
+  hints: Record<string, string>;
   collapsed: boolean;
   dark: boolean;
   open: boolean;
@@ -130,6 +144,7 @@ function NavGroupBlock({
         item={first}
         active={groupActive}
         label={labels[group.def.labelKey]}
+        hint={hints[first.labelKey]}
         collapsed
         dark={dark}
       />
@@ -167,13 +182,14 @@ function NavGroupBlock({
         />
       </button>
       {open ? (
-        <div className="mt-0.5 border-l border-scm-outline-variant/60 pl-1 ml-3">
+        <div className="mt-0.5 ml-1.5 min-w-0 border-l border-scm-outline-variant/60 pl-0">
           {group.items.map((item) => (
             <NavLink
               key={item.href}
               item={item}
               active={isNavItemActive(pathname, item)}
               label={labels[item.labelKey]}
+              hint={hints[item.labelKey]}
               collapsed={false}
               dark={dark}
               nested
@@ -189,6 +205,7 @@ function NavTreePanel({
   section,
   pathname,
   labels,
+  hints,
   collapsed,
   dark,
   openGroups,
@@ -197,6 +214,7 @@ function NavTreePanel({
   section: NavTreeSection;
   pathname: string;
   labels: Record<string, string>;
+  hints: Record<string, string>;
   collapsed: boolean;
   dark: boolean;
   openGroups: Record<string, boolean>;
@@ -210,6 +228,7 @@ function NavTreePanel({
           item={item}
           active={isNavItemActive(pathname, item)}
           label={labels[item.labelKey]}
+          hint={hints[item.labelKey]}
           collapsed={collapsed}
           dark={dark}
         />
@@ -220,6 +239,7 @@ function NavTreePanel({
           group={group}
           pathname={pathname}
           labels={labels}
+          hints={hints}
           collapsed={collapsed}
           dark={dark}
           open={openGroups[group.def.id] ?? group.def.defaultOpen ?? false}
@@ -270,6 +290,7 @@ function DetailPanel({
   title,
   pathname,
   labels,
+  hints,
   collapsed,
   onToggleCollapse,
   roleLevelLabel,
@@ -281,6 +302,7 @@ function DetailPanel({
   title: string;
   pathname: string;
   labels: Record<string, string>;
+  hints: Record<string, string>;
   collapsed: boolean;
   onToggleCollapse: () => void;
   roleLevelLabel: string;
@@ -291,7 +313,7 @@ function DetailPanel({
   return (
     <div
       className={cn(
-        "relative flex h-full min-w-0 flex-col transition-[width,padding,background-color] duration-500",
+        "relative flex h-full min-w-0 flex-col overflow-hidden transition-[width,padding,background-color] duration-500",
         dark ? "bg-nav-dark-bg" : "bg-scm-surface-lowest",
         collapsed ? "w-16 px-0" : "w-64 px-3",
       )}
@@ -348,7 +370,7 @@ function DetailPanel({
 
       <nav
         className={cn(
-          "min-h-0 flex-1 overflow-y-auto overscroll-contain pb-2",
+          "min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain pb-2",
           collapsed && "flex flex-col items-center",
         )}
       >
@@ -356,6 +378,7 @@ function DetailPanel({
           section={section}
           pathname={pathname}
           labels={labels}
+          hints={hints}
           collapsed={collapsed}
           dark={dark}
           openGroups={openGroups}
@@ -460,7 +483,7 @@ export const DesktopSidebar = memo(function DesktopSidebar() {
     });
   }, []);
 
-  const labels = useMemo(() => {
+  const { labels, hints } = useMemo(() => {
     const keys = new Set<string>();
     NAV_SECTIONS.forEach((s) => keys.add(s.titleKey));
     Object.values(tree).forEach((sec) => {
@@ -472,10 +495,16 @@ export const DesktopSidebar = memo(function DesktopSidebar() {
     });
     keys.add(getRoleLevelKey(role));
     const map: Record<string, string> = {};
+    const hintMap: Record<string, string> = {};
     keys.forEach((key) => {
       map[key] = t(key);
+      if (key.startsWith("nav.")) {
+        const hk = navHintKey(key);
+        const h = t(hk);
+        if (h !== hk) hintMap[key] = h;
+      }
     });
-    return map;
+    return { labels: map, hints: hintMap };
   }, [tree, role, t]);
 
   const activeConfig =
@@ -485,7 +514,7 @@ export const DesktopSidebar = memo(function DesktopSidebar() {
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 z-20 flex h-full border-r transition-colors duration-300",
+        "fixed left-0 top-0 z-20 flex h-full overflow-hidden border-r transition-colors duration-300",
         navDark
           ? "border-nav-dark-border bg-nav-dark-bg"
           : "border-scm-outline-variant bg-scm-surface-lowest",
@@ -561,6 +590,7 @@ export const DesktopSidebar = memo(function DesktopSidebar() {
           title={labels[activeConfig.titleKey]}
           pathname={pathname}
           labels={labels}
+          hints={hints}
           collapsed={detailCollapsed}
           onToggleCollapse={toggleDetailCollapsed}
           roleLevelLabel={labels[getRoleLevelKey(role)]}

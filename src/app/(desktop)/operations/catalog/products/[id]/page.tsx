@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { PageHeader } from "@/components/layout/page-parts";
+import { Button } from "@/components/ui/button";
+import { MaterialIcon } from "@/components/ui/material-icon";
 import { useLocale } from "@/components/providers/locale-provider";
 import { useCatalogStore } from "@/components/providers/catalog-store-provider";
 import { ProductThumbnail } from "@/components/catalog/product-thumbnail";
@@ -11,10 +13,10 @@ import {
   formatBomQtyPerUnit,
   formatVolumeAmount,
 } from "@/lib/catalog/format-volume";
-import { COSMETIC_TYPE_LABELS } from "@/lib/mock/product-catalog";
+import { getCosmeticTypeLabel } from "@/lib/i18n/catalog-labels";
 
 export default function CatalogProductDetailPage() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const params = useParams();
   const id = params.id as string;
   const { getProduct, brandLines } = useCatalogStore();
@@ -26,6 +28,8 @@ export default function CatalogProductDetailPage() {
       <p className="text-scm-on-surface-variant">{t("catalog.products.notFound")}</p>
     );
   }
+
+  const newVolumeHref = `/operations/material-bundles/new?productId=${encodeURIComponent(product.id)}`;
 
   return (
     <div className="space-y-6">
@@ -56,7 +60,7 @@ export default function CatalogProductDetailPage() {
           </div>
           <div>
             <dt className="text-scm-on-surface-variant">{t("catalog.productForm.cosmeticType")}</dt>
-            <dd>{COSMETIC_TYPE_LABELS[product.cosmeticType]}</dd>
+            <dd>{getCosmeticTypeLabel(locale, product.cosmeticType)}</dd>
           </div>
           <div>
             <dt className="text-scm-on-surface-variant">{t("catalog.productForm.devDate")}</dt>
@@ -99,6 +103,14 @@ export default function CatalogProductDetailPage() {
             ))}
           </tbody>
         </table>
+        <div className="mt-4">
+          <Button asChild>
+            <Link href={newVolumeHref}>
+              <MaterialIcon name="add" className="mr-1 text-[18px]" />
+              {t("nav.materialBundlesNew")}
+            </Link>
+          </Button>
+        </div>
       </div>
     </div>
   );

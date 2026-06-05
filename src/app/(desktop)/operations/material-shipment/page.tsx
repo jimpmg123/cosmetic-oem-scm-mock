@@ -77,7 +77,7 @@ export default function MaterialShipmentPage() {
 
   const catalogContext = useMemo(() => {
     if (!bundle) return null;
-    const product = resolveCatalogProduct(products, bundle.sku);
+    const product = resolveCatalogProduct(products, bundle.sku, bundle.productId);
     if (!product) return null;
     const line = brandLines.find((l) => l.id === product.lineId);
     return { product, lineName: line?.name ?? "" };

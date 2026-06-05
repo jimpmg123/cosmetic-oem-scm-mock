@@ -6,7 +6,7 @@ import {
 } from "@/lib/mock/product-catalog";
 import type { MaterialLine } from "@/lib/mock/material-shipment-lines";
 
-/** legacy 묶음 SKU → 카탈로그 제품 id (test_data 시드) */
+/** legacy 묶음 SKU → 카탈로그 제품 id (하위 호환) */
 export const BUNDLE_SKU_CATALOG_PRODUCT: Record<string, string> = {
   "SERUM-50": "prod-aevora-serum",
   "LOTION-250": "prod-aevora-lotion",
@@ -16,12 +16,19 @@ export const BUNDLE_SKU_CATALOG_PRODUCT: Record<string, string> = {
 
 export function resolveCatalogProduct(
   products: CatalogProduct[],
-  sku: string,
+  skuOrCode?: string,
   catalogProductId?: string,
 ): CatalogProduct | undefined {
-  const id = catalogProductId ?? BUNDLE_SKU_CATALOG_PRODUCT[sku];
-  if (!id) return undefined;
-  return products.find((p) => p.id === id);
+  if (catalogProductId) {
+    const byId = products.find((p) => p.id === catalogProductId);
+    if (byId) return byId;
+  }
+  if (!skuOrCode) return undefined;
+  const byCode = products.find((p) => p.code === skuOrCode);
+  if (byCode) return byCode;
+  const legacyId = BUNDLE_SKU_CATALOG_PRODUCT[skuOrCode];
+  if (legacyId) return products.find((p) => p.id === legacyId);
+  return undefined;
 }
 
 export function buildShipmentLinesFromCatalog(

@@ -91,7 +91,7 @@ export const INITIAL_MATERIAL_SHIPMENTS: MaterialShipmentRecord[] = [
     status: "shipped",
     manufacturerId: "mfr-yunhua",
     manufacturerName: "Yunhua BioLab",
-    lines: catalogShipmentLines("SERUM-50", 1100, "s"),
+    lines: catalogShipmentLines("AEVO-SER-01", 1100, "s"),
   },
   {
     id: "mshp-002",
@@ -101,7 +101,7 @@ export const INITIAL_MATERIAL_SHIPMENTS: MaterialShipmentRecord[] = [
     status: "shipped",
     manufacturerId: "mfr-lianxi",
     manufacturerName: "Lianxi DermaWorks",
-    lines: catalogShipmentLines("TONER-200", 800, "t"),
+    lines: catalogShipmentLines("LUMI-TON-01", 800, "t"),
   },
   {
     id: "mshp-004",
@@ -112,7 +112,7 @@ export const INITIAL_MATERIAL_SHIPMENTS: MaterialShipmentRecord[] = [
     manufacturerId: "mfr-yunhua",
     manufacturerName: "Yunhua BioLab",
     note: "1차 전량",
-    lines: catalogShipmentLines("LOTION-250", 8000, "l"),
+    lines: catalogShipmentLines("AEVO-LOT-01", 8000, "l"),
   },
   {
     id: "mshp-004b",

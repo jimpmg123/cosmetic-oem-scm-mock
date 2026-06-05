@@ -81,7 +81,7 @@ function KpiCard({
 }
 
 export default function DashboardPage() {
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
   const { role } = useRole();
   const { workOrders, inboundShipments } = useMockStore();
   const adminView = isAdminOversight(role);
@@ -95,20 +95,13 @@ export default function DashboardPage() {
   const disc = primary ? calcInboundDiscrepancy(primary) : null;
   const showAlert = disc != null && disc < 0;
 
-  const title =
-    locale === "ko"
-      ? "대시보드 (Dashboard)"
-      : locale === "zh"
-        ? "仪表盘 (Dashboard)"
-        : "Dashboard";
-
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-end justify-between">
         <div>
           <h2 className="text-2xl font-semibold tracking-tight text-scm-primary">
-            {title}
+            {t("dashboard.title")}
           </h2>
           <p className="text-sm text-scm-on-surface-variant">
             {t("dashboard.desc")}

@@ -23,6 +23,10 @@ import {
   type DirectiveAnalytics,
 } from "@/lib/mock/analytics";
 import {
+  INITIAL_BRAND_LINES,
+  INITIAL_CATALOG_PRODUCTS,
+} from "@/lib/mock/product-catalog";
+import {
   INITIAL_BUNDLE_SHIPMENTS,
   INITIAL_DAILY_LOGS,
   INITIAL_DIRECTIVES,
@@ -30,7 +34,6 @@ import {
   INITIAL_MATERIAL_RECEIPTS,
   INITIAL_RECEIPT_AUDITS,
   nextBundleNumber,
-  SKU_OPTIONS,
   VENDORS,
   type BundleShipmentToC,
   type DailyProductionLog,
@@ -41,7 +44,7 @@ import {
 } from "@/lib/mock/material-bundles";
 
 type CreateBundleInput = {
-  sku: string;
+  productId: string;
   theoreticalQty: number;
   targetQty: number;
   useFromDate?: string;
@@ -303,7 +306,10 @@ export function MockStoreProvider({ children }: { children: ReactNode }) {
 
   const createMaterialBundle = useCallback(
     (input: CreateBundleInput) => {
-      const skuMeta = SKU_OPTIONS.find((s) => s.sku === input.sku);
+      const product = INITIAL_CATALOG_PRODUCTS.find((p) => p.id === input.productId);
+      const line = product
+        ? INITIAL_BRAND_LINES.find((l) => l.id === product.lineId)
+        : undefined;
       const vendor = VENDORS.find((v) => v.id === input.vendorId);
       const id = `mb-${Date.now()}`;
       let newId = id;
@@ -312,8 +318,10 @@ export function MockStoreProvider({ children }: { children: ReactNode }) {
         const bundle: MaterialBundle = {
           id,
           number,
-          sku: input.sku,
-          productName: skuMeta?.productName ?? input.sku,
+          productId: input.productId,
+          sku: product?.code ?? input.productId,
+          productName: product?.name ?? input.productId,
+          lineName: line?.name,
           theoreticalQty: input.theoreticalQty,
           targetQty: input.targetQty,
           useFromDate: input.useFromDate,

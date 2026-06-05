@@ -11,6 +11,9 @@ import { Button } from "@/components/ui/button";
 import { MaterialIcon } from "@/components/ui/material-icon";
 import { useLocale } from "@/components/providers/locale-provider";
 import { useMockStore } from "@/components/providers/mock-store-provider";
+import { useRole } from "@/components/providers/role-provider";
+import { canCreateVolume } from "@/lib/a-admin-permissions";
+import { formatBundleProductLabel } from "@/lib/catalog/bundle-product";
 import {
   calcBundleE2eYield,
   formatDateRange,
@@ -33,6 +36,8 @@ const ALL_STATUSES: BundleStatus[] = ["planned", "active", "depleted", "closed"]
 export default function MaterialBundlesPage() {
   const { t, locale } = useLocale();
   const router = useRouter();
+  const { role } = useRole();
+  const showNewVolume = canCreateVolume(role);
   const { materialBundles, addDirective } = useMockStore();
 
   const [statusFilter, setStatusFilter] = useState<Set<BundleStatus>>(
@@ -107,12 +112,14 @@ export default function MaterialBundlesPage() {
             {t("bundle.list.desc")}
           </p>
         </div>
-        <Link href="/operations/material-bundles/new">
-          <Button>
-            <MaterialIcon name="add" className="text-[18px]" />
-            {t("bundle.list.new")}
-          </Button>
-        </Link>
+        {showNewVolume ? (
+          <Link href="/operations/material-bundles/new">
+            <Button>
+              <MaterialIcon name="add" className="text-[18px]" />
+              {t("bundle.list.new")}
+            </Button>
+          </Link>
+        ) : null}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -167,9 +174,11 @@ export default function MaterialBundlesPage() {
         <DashboardCard title={t("bundle.card.list")}>
           <div className="py-8 text-center">
             <p className="text-scm-on-surface-variant">{t("bundle.list.empty")}</p>
-            <Link href="/operations/material-bundles/new" className="mt-4 inline-block">
-              <Button>{t("bundle.list.new")}</Button>
-            </Link>
+            {showNewVolume ? (
+              <Link href="/operations/material-bundles/new" className="mt-4 inline-block">
+                <Button>{t("bundle.list.new")}</Button>
+              </Link>
+            ) : null}
           </div>
         </DashboardCard>
       ) : (
@@ -227,7 +236,7 @@ export default function MaterialBundlesPage() {
                       ) : null}
                     </td>
                     <td className="px-4 py-3">
-                      {bundle.sku} — {bundle.productName}
+                      {formatBundleProductLabel(bundle)}
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums">
                       {bundle.theoreticalQty.toLocaleString()}

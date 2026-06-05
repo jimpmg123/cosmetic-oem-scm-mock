@@ -1,7 +1,9 @@
 "use client";
 
+import { useLocale } from "@/components/providers/locale-provider";
 import { MaterialIcon } from "@/components/ui/material-icon";
-import { COSMETIC_TYPE_LABELS, type CosmeticType } from "@/lib/mock/product-catalog";
+import { getCosmeticTypeLabel } from "@/lib/i18n/catalog-labels";
+import type { CosmeticType } from "@/lib/mock/product-catalog";
 import { cn } from "@/lib/utils";
 
 export function ProductThumbnail({
@@ -17,6 +19,7 @@ export function ProductThumbnail({
   size?: "sm" | "md" | "lg";
   className?: string;
 }) {
+  const { locale } = useLocale();
   const dim =
     size === "lg" ? "h-24 w-24" : size === "sm" ? "h-10 w-10" : "h-16 w-16";
   const hasImage = imageUrl && imageUrl.trim().length > 0;
@@ -31,7 +34,7 @@ export function ProductThumbnail({
     );
   }
 
-  const label = cosmeticType ? COSMETIC_TYPE_LABELS[cosmeticType] : name;
+  const label = cosmeticType ? getCosmeticTypeLabel(locale, cosmeticType) : name;
   const initial = name.slice(0, 1) || "?";
 
   return (

@@ -43,7 +43,7 @@ function MaterialReceiptForm() {
 
   function onMatchAll() {
     setQty(String(aShipped));
-    saveMaterialReceipt(bundleId, aShipped, "전량 일치 확인");
+    saveMaterialReceipt(bundleId, aShipped, t("receipt.matchAllComment"));
     setSaved(true);
   }
 
@@ -121,7 +121,7 @@ function MaterialReceiptForm() {
             rows={2}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            placeholder="수정·확정 사유"
+            placeholder={t("receipt.commentPlaceholder")}
           />
         </label>
 

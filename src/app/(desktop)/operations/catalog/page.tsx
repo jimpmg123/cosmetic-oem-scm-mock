@@ -12,7 +12,8 @@ import { LineFormModal, type LineFormValues } from "@/components/catalog/line-fo
 import { MaterialIcon } from "@/components/ui/material-icon";
 import { formatVolumeAmount } from "@/lib/catalog/format-volume";
 import { getManufacturerById } from "@/lib/mock/manufacturer-seed";
-import { COSMETIC_TYPE_LABELS, type BrandLine } from "@/lib/mock/product-catalog";
+import { getCosmeticTypeLabel } from "@/lib/i18n/catalog-labels";
+import type { BrandLine, CosmeticType } from "@/lib/mock/product-catalog";
 import { cn } from "@/lib/utils";
 
 const catalogCardInteractive = cn(
@@ -155,7 +156,7 @@ export default function CatalogPage() {
       return (
         p.name.toLowerCase().includes(q) ||
         p.code.toLowerCase().includes(q) ||
-        COSMETIC_TYPE_LABELS[p.cosmeticType].toLowerCase().includes(q) ||
+        getCosmeticTypeLabel(locale, p.cosmeticType).toLowerCase().includes(q) ||
         (line?.name.toLowerCase().includes(q) ?? false)
       );
     });
@@ -165,6 +166,7 @@ export default function CatalogPage() {
     selectedLineId,
     productSearch,
     brandLines,
+    locale,
   ]);
 
   const selectedManufacturer = getManufacturerById(
@@ -423,7 +425,7 @@ export default function CatalogPage() {
                     <p className="truncate text-xs text-scm-secondary">{line.name}</p>
                   ) : null}
                   <p className="truncate text-xs text-scm-on-surface-variant">
-                    {COSMETIC_TYPE_LABELS[p.cosmeticType]} · {p.code}
+                    {getCosmeticTypeLabel(locale, p.cosmeticType)} · {p.code}
                     {p.productVolume ? (
                       <span className="ml-1">
                         · {formatVolumeAmount(p.productVolume)}

@@ -38,6 +38,7 @@ export function useRole() {
 
 export const ALL_ROLES: UserRole[] = [
   "super_admin",
+  "a_admin",
   "b_admin",
   "b_staff",
   "warehouse",

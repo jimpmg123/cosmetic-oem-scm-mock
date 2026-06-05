@@ -1,23 +1,15 @@
 "use client";
 
 import { OpsMockPage } from "@/components/operations/ops-mock-page";
+import { useLocale } from "@/components/providers/locale-provider";
 
 const MOCK_EXCEPTIONS = [
-  {
-    id: "ex-001",
-    type: "b_c_gap",
-    bundle: "mb-2026-002",
-    summary: "B 출하 120 vs C 입고 115",
-  },
-  {
-    id: "ex-002",
-    type: "transit",
-    bundle: "mb-2026-001",
-    summary: "A 출하 1200 vs B 확인 1180",
-  },
-];
+  { id: "ex-001", type: "b_c_gap", bundle: "mb-2026-002", summaryKey: "exceptions.mock.ex001" },
+  { id: "ex-002", type: "transit", bundle: "mb-2026-001", summaryKey: "exceptions.mock.ex002" },
+] as const;
 
 export default function ExceptionsPage() {
+  const { t } = useLocale();
   return (
     <div className="space-y-6">
       <OpsMockPage
@@ -34,7 +26,7 @@ export default function ExceptionsPage() {
             <span className="font-mono text-xs text-scm-on-surface-variant">
               {e.id}
             </span>
-            <span>{e.summary}</span>
+            <span>{t(e.summaryKey)}</span>
             <span className="text-scm-on-surface-variant">{e.bundle}</span>
           </li>
         ))}

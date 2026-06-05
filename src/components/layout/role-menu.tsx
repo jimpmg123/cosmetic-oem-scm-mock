@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 const ROLE_KEYS = {
   super_admin: "role.super_admin",
+  a_admin: "role.a_admin",
   b_admin: "role.b_admin",
   b_staff: "role.b_staff",
   warehouse: "role.warehouse",
@@ -17,6 +18,7 @@ const ROLE_KEYS = {
 
 const ROLE_LEVEL_KEYS = {
   super_admin: "role.level.4",
+  a_admin: "role.level.a_admin",
   b_admin: "role.level.3",
   b_staff: "role.level.2",
   warehouse: "role.level.mobile",

@@ -22,9 +22,17 @@ import { MaterialIcon } from "@/components/ui/material-icon";
 import { FormField, inputClassName } from "@/components/layout/page-parts";
 import { SectionRailNav } from "@/components/ui/section-rail-nav";
 import { useLocale } from "@/components/providers/locale-provider";
+import { formatCountUnits } from "@/lib/i18n/format-locale";
+import type { Locale, TranslationParams } from "@/lib/i18n/translations";
 import { useMockStore } from "@/components/providers/mock-store-provider";
 import { useRole } from "@/components/providers/role-provider";
 import { canSeeStaffInputUi } from "@/lib/role-access";
+import {
+  canCloseBundle,
+  canEditBundle,
+  canIssueDirective,
+} from "@/lib/a-admin-permissions";
+import { formatBundleProductLabel } from "@/lib/catalog/bundle-product";
 import {
   calcBundleInboundAchievement,
   calcBundleOverallAchievement,
@@ -109,6 +117,8 @@ export function BundleDetailView({
   }
 
   const isA = variant === "a";
+  const canEdit = isA && canEditBundle(role, bundle);
+  const canManageLifecycle = isA && canCloseBundle(role);
   const isClosed = bundle.status === "closed";
   const finalized = isBundleYieldFinalized(bundle);
   const inbound = calcBundleInboundAchievement(bundle);
@@ -123,7 +133,7 @@ export function BundleDetailView({
     .filter((d) => d.status === "issued" || d.status === "in_progress")
     .sort((a, b) => a.dueDate.localeCompare(b.dueDate))[0];
 
-  const timelineEvents = buildTimeline(bundle, directives);
+  const timelineEvents = buildTimeline(bundle, directives, t, locale);
   const visibleTimeline = timelineExpanded
     ? timelineEvents
     : timelineEvents.slice(-5);
@@ -185,11 +195,13 @@ export function BundleDetailView({
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
-              {isA && !isClosed ? (
+              {canManageLifecycle && !isClosed ? (
                 <>
-                  <Button variant="outline" onClick={() => setDirectiveOpen(true)}>
-                    {t("bundle.action.issueDirective")}
-                  </Button>
+                  {canIssueDirective(role) ? (
+                    <Button variant="outline" onClick={() => setDirectiveOpen(true)}>
+                      {t("bundle.action.issueDirective")}
+                    </Button>
+                  ) : null}
                   {bundle.status === "planned" ? (
                     <Button
                       variant="outline"
@@ -368,7 +380,7 @@ export function BundleDetailView({
             title={t("bundle.section.basic")}
             summary={`${bundle.productName} · ${t("bundle.kpi.target")} ${bundle.targetQty.toLocaleString()} · ${formatDateRange(bundle.useFromDate, bundle.useByDate, locale)}`}
             actions={
-              isA && !isClosed && !editingBasic ? (
+              canEdit && !editingBasic ? (
                 <Button variant="outline" size="sm" onClick={startEditBasic}>
                   {t("common.edit")}
                 </Button>
@@ -436,7 +448,7 @@ export function BundleDetailView({
               </div>
             ) : (
               <DetailGrid>
-                <DetailField label={t("bundle.form.sku")} value={`${bundle.sku} — ${bundle.productName}`} />
+                <DetailField label={t("bundle.form.product")} value={formatBundleProductLabel(bundle)} />
                 <DetailField label={t("bundle.form.vendor")} value={bundle.vendorName} />
                 <DetailField label={t("bundle.form.theoretical")} value={bundle.theoreticalQty.toLocaleString()} />
                 <DetailField label={t("bundle.form.target")} value={bundle.targetQty.toLocaleString()} />
@@ -460,7 +472,7 @@ export function BundleDetailView({
                 : t("bundle.notShipped")
             }
             actions={
-              isA && !isClosed && !editingShipment ? (
+              canEdit && !editingShipment ? (
                 <Button variant="outline" size="sm" onClick={startEditShipment}>
                   {t("common.edit")}
                 </Button>
@@ -705,7 +717,7 @@ export function BundleDetailView({
         className="hidden lg:flex"
       />
 
-      {isA ? (
+      {isA && canIssueDirective(role) ? (
         <DirectiveModal
           bundle={bundle}
           open={directiveOpen}
@@ -717,11 +729,16 @@ export function BundleDetailView({
   );
 }
 
-function buildTimeline(bundle: MaterialBundle, directives: PeriodDirective[]) {
+function buildTimeline(
+  bundle: MaterialBundle,
+  directives: PeriodDirective[],
+  t: (key: string, params?: TranslationParams) => string,
+  locale: Locale,
+) {
   const events: { key: string; title: string; subtitle: string; sort: string }[] = [
     {
       key: "created",
-      title: "묶음 생성",
+      title: t("timeline.created"),
       subtitle: `${bundle.createdAt.slice(0, 10)} · ${bundle.createdBy}`,
       sort: bundle.createdAt,
     },
@@ -729,14 +746,14 @@ function buildTimeline(bundle: MaterialBundle, directives: PeriodDirective[]) {
   if (bundle.shippedAt) {
     events.push({
       key: "shipped",
-      title: "A 출하 완료",
+      title: t("timeline.shipped"),
       subtitle: bundle.shippedAt,
       sort: bundle.shippedAt,
     });
   }
   events.push({
     key: "ack",
-    title: bundle.acknowledgedAt ? "B 착수" : "B 착수 대기",
+    title: bundle.acknowledgedAt ? t("timeline.ack") : t("timeline.ackPending"),
     subtitle: bundle.acknowledgedAt
       ? `${bundle.acknowledgedAt} · ${bundle.acknowledgedBy ?? ""}`
       : "—",
@@ -745,7 +762,7 @@ function buildTimeline(bundle: MaterialBundle, directives: PeriodDirective[]) {
   for (const d of directives) {
     events.push({
       key: d.id,
-      title: `지시 · ${d.targetQty.toLocaleString()}개`,
+      title: `${t("timeline.directive")} · ${formatCountUnits(locale, d.targetQty, t)}`,
       subtitle: `${d.dueDate}${d.comment ? ` — ${d.comment}` : ""}`,
       sort: d.issuedAt ?? d.dueDate,
     });
@@ -753,7 +770,7 @@ function buildTimeline(bundle: MaterialBundle, directives: PeriodDirective[]) {
   if (bundle.depletedAt) {
     events.push({
       key: "depleted",
-      title: "자재 소진",
+      title: t("timeline.depleted"),
       subtitle: bundle.depletedAt,
       sort: bundle.depletedAt,
     });
@@ -761,7 +778,7 @@ function buildTimeline(bundle: MaterialBundle, directives: PeriodDirective[]) {
   if (bundle.closedAt) {
     events.push({
       key: "closed",
-      title: "묶음 마감",
+      title: t("timeline.closed"),
       subtitle: bundle.closedAt,
       sort: bundle.closedAt,
     });

@@ -3,14 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "dev:clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\" && next dev --turbopack",
+    "dev": "node scripts/kill-dev-ports.mjs && next dev --turbopack",
+    "dev:webpack": "node scripts/kill-dev-ports.mjs && next dev",
+    "dev:clean": "node scripts/kill-dev-ports.mjs && node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\" && next dev --turbopack",
+    "postinstall": "node scripts/emit-locale-json.mjs",
+    "i18n:merge": "node scripts/merge-locales.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "sync:catalog-images": "node scripts/sync-catalog-images.mjs",
-    "predev": "npm run sync:catalog-images",
-    "prebuild": "npm run sync:catalog-images"
+    "i18n:emit": "node scripts/emit-locale-json.mjs",
+    "predev": "npm run sync:catalog-images && npm run i18n:emit",
+    "prebuild": "npm run sync:catalog-images && npm run i18n:emit"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.1.16",

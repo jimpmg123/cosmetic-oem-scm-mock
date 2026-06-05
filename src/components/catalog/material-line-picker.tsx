@@ -6,9 +6,9 @@ import { useLocale } from "@/components/providers/locale-provider";
 import { useCatalogStore } from "@/components/providers/catalog-store-provider";
 import { ProductThumbnail } from "@/components/catalog/product-thumbnail";
 import { formatBomPercent, formatBomQtyPerUnit } from "@/lib/catalog/format-volume";
+import { getCosmeticTypeLabel } from "@/lib/i18n/catalog-labels";
 import {
   A_PUSH_YIELD_PCT,
-  COSMETIC_TYPE_LABELS,
   calcProductionLines,
   scaledMaterialQty,
   searchCatalog,
@@ -40,7 +40,7 @@ export function MaterialLinePicker({
   scaleTargetUnits?: number;
   scaleYieldPct?: number;
 }) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { brandLines, products } = useCatalogStore();
   const [query, setQuery] = useState("");
   const [pickProductId, setPickProductId] = useState("");
@@ -220,7 +220,7 @@ export function MaterialLinePicker({
                             {hit.product.name}{" "}
                             <span className="text-scm-on-surface-variant">
                               {hit.product.code} ·{" "}
-                              {COSMETIC_TYPE_LABELS[hit.product.cosmeticType]}
+                              {getCosmeticTypeLabel(locale, hit.product.cosmeticType)}
                             </span>
                           </span>
                         )}
@@ -276,7 +276,7 @@ export function MaterialLinePicker({
                     <div className="min-w-0 text-sm">
                       <p className="font-medium truncate">{selectedProduct.name}</p>
                       <p className="text-scm-on-surface-variant">
-                        {COSMETIC_TYPE_LABELS[selectedProduct.cosmeticType]} ·{" "}
+                        {getCosmeticTypeLabel(locale, selectedProduct.cosmeticType)} ·{" "}
                         {selectedProduct.code}
                       </p>
                     </div>

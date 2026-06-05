@@ -9,8 +9,9 @@ import { YieldSummaryRow } from "@/components/material-bundles/yield-summary-row
 import { useLocale } from "@/components/providers/locale-provider";
 import { useMockStore } from "@/components/providers/mock-store-provider";
 import { useRole } from "@/components/providers/role-provider";
-import { formatDateRange, formatPct, sortBundlesForList } from "@/lib/mock/material-bundles";
+import { formatBundleProductLabel } from "@/lib/catalog/bundle-product";
 import { getBundleSummaryDonutMetrics } from "@/lib/mock/bundle-metric-display";
+import { formatDateRange, formatPct, sortBundlesForList } from "@/lib/mock/material-bundles";
 import { calcBundleInboundAchievement } from "@/lib/mock/yield-metrics";
 
 export default function BBundlesListPage() {
@@ -79,7 +80,7 @@ export default function BBundlesListPage() {
                       {bundle.number}
                     </Link>
                     <p className="text-sm text-scm-on-surface-variant">
-                      {bundle.sku} — {bundle.productName}
+                      {formatBundleProductLabel(bundle)}
                     </p>
                   </div>
                   <BundleStatusBadge status={bundle.status} />
@@ -183,7 +184,7 @@ export default function BBundlesListPage() {
                       </Link>
                     </td>
                     <td className="px-4 py-3">
-                      {bundle.sku} — {bundle.productName}
+                      {formatBundleProductLabel(bundle)}
                     </td>
                     <td className="px-4 py-3">
                       {formatDateRange(bundle.useFromDate, bundle.useByDate, locale)}

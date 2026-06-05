@@ -32,6 +32,7 @@ import {
   INITIAL_MANUFACTURERS,
 } from "@/lib/mock/manufacturer-seed";
 import { inputClassName } from "@/components/layout/page-parts";
+import { formatWeekdayShort } from "@/lib/i18n/format-locale";
 
 const HEAT_BG = [
   "bg-scm-surface-container-low text-scm-on-surface-variant",
@@ -245,7 +246,7 @@ export default function ProductionCalendarPage() {
                 denominator: activeDirective?.targetQty ?? 0,
                 caption: t("calendar.progressPeriod"),
                 subcaption: activeDirective
-                  ? `${activeDirective.number} · ${t("calendar.progressPeriodSub")}`
+                  ? `${activeDirective.dueDate} · ${t("calendar.progressPeriodSub")}`
                   : t("calendar.noActiveDirective"),
               },
               {
@@ -378,9 +379,9 @@ export default function ProductionCalendarPage() {
         ) : (
           <div className="mt-5 w-full">
             <div className="grid grid-cols-7 gap-1.5 text-center text-xs font-medium text-scm-on-surface-variant sm:gap-2">
-              {["일", "월", "화", "수", "목", "금", "토"].map((d) => (
-                <div key={d} className="py-1">
-                  {d}
+              {Array.from({ length: 7 }, (_, i) => (
+                <div key={i} className="py-1">
+                  {formatWeekdayShort(locale, i)}
                 </div>
               ))}
             </div>
