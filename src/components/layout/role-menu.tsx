@@ -27,7 +27,7 @@ const ROLE_LEVEL_KEYS: Record<UserRole, string> = {
 };
 
 const CHINA_SUPPLY_ROLE_LABELS: Partial<Record<UserRole, string>> = {
-  executive: "Executive",
+  executive: "Executive / 경영진용",
   super_admin: "APPLICELL Korea Super Admin",
   a_admin: "APPLICELL Korea Manufacturing Admin",
   b_admin: "APPLICELL China Admin",
@@ -43,7 +43,7 @@ export const CHINA_SUPPLY_ROLE_OPTIONS: UserRole[] = [
 ];
 
 export const CHINA_SUPPLY_ROLE_LEVEL_LABELS: Partial<Record<UserRole, string>> = {
-  executive: "Executive Overview",
+  executive: "Executive / 경영진용",
   super_admin: "Korea Full Control",
   a_admin: "Korea Manufacturing Ops",
   b_admin: "China Operating Company",

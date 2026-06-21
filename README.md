@@ -85,8 +85,8 @@ Kolmar China는 내부 사용자가 아니라 **외부 제조처 / 발주 대상
 
 | 역할 | 목적 | 접근 범위 |
 |------|------|-----------|
-| Executive | 회장님 / 최고경영진 overview | 경영 요약 |
-| APPLICELL Korea Super Admin | 전체 운영 관리 | 운영2 전체, 예외 처리 |
+| Executive / 경영진용 | 경영진 overview | 경영 요약 |
+| APPLICELL Korea Super Admin | 전체 운영 관리 | 운영2 실무 전체, 예외 처리 |
 | APPLICELL Korea Manufacturing Admin | 한국 제조 운영 실무 | 제품·BOM, 제조 요청, 콜마 자료, 수율/E2E |
 | APPLICELL China Admin | 중국 운영 관리자 | 입고 검수, 보류 확정, 판매 가능 재고 전환 |
 | APPLICELL China Logistics | 중국 물류 실무 | 입고 검수, 증빙 업로드, 입고 차이 등록 |
@@ -99,7 +99,7 @@ Kolmar China는 내부 사용자가 아니라 **외부 제조처 / 발주 대상
 
 | URL | 설명 |
 |-----|------|
-| `/operations-2/executive` | 회장님 / 최고경영진용 경영 요약 |
+| `/operations-2/executive` | Executive / 경영진용 경영 요약 |
 | `/operations-2` | 중국 제조·공급 현황 |
 | `/operations-2/catalog` | 제품 카탈로그 |
 | `/operations-2/bom` | BOM 기준 |
@@ -119,7 +119,7 @@ Kolmar China는 내부 사용자가 아니라 **외부 제조처 / 발주 대상
 
 ---
 
-## 회장님 Overview
+## Executive / 경영진용 Overview
 
 `/operations-2/executive`는 실무 입력 화면이 아니라 경영 판단용 요약 화면입니다.
 
@@ -277,7 +277,7 @@ Production_Tracking/
 | 문서 | 내용 |
 |------|------|
 | `docs/china-supply-flow/web-structure.md` | 운영 구조 2의 공급 흐름과 메뉴 초안 |
-| `docs/china-supply-flow/executive-summary-spec.md` | 최고경영진 overview 화면 설계 |
+| `docs/china-supply-flow/executive-summary-spec.md` | Executive / 경영진용 overview 화면 설계 |
 | `docs/pages/` | 레거시 화면별 스펙 |
 | `docs/domain/` | 레거시 수율, E2E, 물량 개념 |
 

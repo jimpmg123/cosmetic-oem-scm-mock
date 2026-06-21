@@ -14,7 +14,7 @@
   "structure2.title": "운영 구조 2",
   "structure2.desc": "두 번째 비즈니스 운영 구조입니다. 상세 구조는 추후 정의되며, 현재는 기존 운영 구조의 UI를 따릅니다.",
   "structure2.back": "현재 운영 구조로 돌아가기",
-  "structure2.note": "회장님이 비즈니스 구조를 확정하면 이 화면에 두 번째 운영 구조(역할·메뉴·데이터 흐름)를 구성합니다.",
+  "structure2.note": "경영진이 비즈니스 구조를 확정하면 이 화면에 두 번째 운영 구조(역할·메뉴·데이터 흐름)를 구성합니다.",
   "nav.dashboard": "Dashboard",
   "nav.productionOrders": "Production Orders",
   "nav.materialShipments": "Material Shipments",

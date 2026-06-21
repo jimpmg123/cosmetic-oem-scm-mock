@@ -251,7 +251,7 @@ export default function ExecutiveOverviewPage() {
               Executive Overview
             </h1>
             <Badge variant="outline" className="bg-white">
-              회장님용
+              경영진용
             </Badge>
           </div>
           <p className="mt-1 max-w-3xl text-sm text-scm-on-surface-variant">

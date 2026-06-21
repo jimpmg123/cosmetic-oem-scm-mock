@@ -458,7 +458,7 @@ export function getNavTree(role: UserRole): NavTree {
   return tree;
 }
 
-const CHINA_SUPPLY_EXECUTIVE_ROLES: UserRole[] = ["executive", "super_admin"];
+const CHINA_SUPPLY_EXECUTIVE_ROLES: UserRole[] = ["executive"];
 const CHINA_SUPPLY_KOREA_ROLES: UserRole[] = ["super_admin", "a_admin"];
 const CHINA_SUPPLY_CHINA_ROLES: UserRole[] = ["b_admin", "b_staff"];
 const CHINA_SUPPLY_INBOUND_ROLES: UserRole[] = ["super_admin", ...CHINA_SUPPLY_CHINA_ROLES];

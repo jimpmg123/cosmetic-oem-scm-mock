@@ -103,7 +103,7 @@ export function canAccessRoute(role: UserRole, pathname: string): boolean {
     case "b_calendar":
       return ADMIN_OVERSIGHT_ROLES.includes(role) || B_FIELD_INPUT_ROLES.includes(role);
     case "executive_overview":
-      return role === "executive" || role === "super_admin";
+      return role === "executive";
     case "china_supply_korea":
       return role === "super_admin" || role === "a_admin";
     case "china_supply_inbound":
