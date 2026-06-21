@@ -176,3 +176,23 @@ export function isAdminOversight(role: UserRole): boolean {
 export function canSeeStaffInputUi(role: UserRole): boolean {
   return B_FIELD_INPUT_ROLES.includes(role);
 }
+
+/** 운영 구조 2 카탈로그/BOM 입력(작성·수정) — Korea 실무(a_admin)·최고관리자(super) */
+export function canEditChinaCatalog(role: UserRole): boolean {
+  return role === "a_admin" || role === "super_admin";
+}
+
+/** 운영 구조 2 카탈로그/BOM 확정(승인·스냅샷 잠금) — Korea 최고관리자만 (입력≠확정 SoD) */
+export function canApproveChinaCatalog(role: UserRole): boolean {
+  return role === "super_admin";
+}
+
+/** 운영 구조 2 제조 요청(발주) 작성·제출 — Korea 실무(a_admin)·최고관리자(super) */
+export function canCreateMfgRequest(role: UserRole): boolean {
+  return role === "a_admin" || role === "super_admin";
+}
+
+/** 운영 구조 2 제조 요청(발주) 확정 — Korea 최고관리자만 (작성≠확정 SoD) */
+export function canApproveMfgRequest(role: UserRole): boolean {
+  return role === "super_admin";
+}
