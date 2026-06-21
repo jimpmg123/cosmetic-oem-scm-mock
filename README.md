@@ -43,7 +43,7 @@ NetSuite 위탁생산 + FBA 입고 대사 개념을 사내 ERP/Operations 형태
 | **달성도** | 진행 중 “얼마나 왔나” | 예: `C입고 ÷ 목표`, `생산 ÷ 목표` |
 | **로스 여유** | 출하·BOM 산출 시 grant 여유 % | 수율과 별개 |
 
-상세: [`docs/domain/yield-and-progress.md`](docs/domain/yield-and-progress.md)
+상세: [`docs/domain/yield-and-progress.md`](docs/domain/yield-and-progress.md) · 에이전트용: [`docs/agent/agent-context.md`](docs/agent/agent-context.md)
 
 ---
 

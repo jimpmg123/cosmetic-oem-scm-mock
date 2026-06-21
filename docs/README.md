@@ -1,9 +1,15 @@
 # docs — 문서 안내
 
+> **AI 에이전트:** 맥락 파악은 [`agent/agent-context.md`](./agent/agent-context.md) 를 **가장 먼저** 읽을 것.  
+> 세션 변경·갱신 프롬프트는 [`agent/CHANGELOG.md`](./agent/CHANGELOG.md).
+
 ## 파일 맵
 
 ```
 docs/
+├── agent/              ← ★ AI 에이전트 전용
+│   ├── agent-context.md    맥락 이해 (온보딩)
+│   └── CHANGELOG.md        업데이트 프롬프트 · 변경 이력
 ├── PROJECT.md          ← 제품·역할·현재 mock vs 목표·엔티티 요약 (먼저 읽기)
 ├── README.md           ← 이 파일 (폴더 규칙)
 ├── domain/             ← 비즈니스 개념 (화면에 안 묶인 것)

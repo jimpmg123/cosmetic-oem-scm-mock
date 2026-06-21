@@ -297,6 +297,9 @@ function DetailPanel({
   dark,
   openGroups,
   onToggleGroup,
+  structureSwitchHref,
+  structureSwitchLabel,
+  structureActive,
 }: {
   section: NavTreeSection;
   title: string;
@@ -309,6 +312,9 @@ function DetailPanel({
   dark: boolean;
   openGroups: Record<string, boolean>;
   onToggleGroup: (id: string) => void;
+  structureSwitchHref?: string | null;
+  structureSwitchLabel?: string;
+  structureActive?: boolean;
 }) {
   return (
     <div
@@ -326,14 +332,35 @@ function DetailPanel({
         )}
       >
         {!collapsed ? (
-          <h2
-            className={cn(
-              "truncate text-lg font-semibold",
-              dark ? "text-nav-dark-text" : "text-scm-primary",
-            )}
-          >
-            {title}
-          </h2>
+          <div className="flex min-w-0 flex-1 items-center gap-1.5">
+            <h2
+              className={cn(
+                "truncate text-lg font-semibold",
+                dark ? "text-nav-dark-text" : "text-scm-primary",
+              )}
+            >
+              {title}
+            </h2>
+            {structureSwitchHref ? (
+              <Link
+                href={structureSwitchHref}
+                title={structureSwitchLabel}
+                aria-label={structureSwitchLabel}
+                className={cn(
+                  "flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors",
+                  structureActive
+                    ? dark
+                      ? "bg-nav-dark-active text-nav-dark-text"
+                      : "bg-scm-surface-container text-scm-secondary"
+                    : dark
+                      ? "text-nav-dark-muted hover:bg-nav-dark-hover hover:text-nav-dark-icon"
+                      : "text-scm-on-surface-variant hover:bg-scm-surface-container hover:text-scm-on-surface",
+                )}
+              >
+                <MaterialIcon name="swap_horiz" className="text-[18px]" />
+              </Link>
+            ) : null}
+          </div>
         ) : null}
         <button
           type="button"
@@ -511,6 +538,12 @@ export const DesktopSidebar = memo(function DesktopSidebar() {
     visibleSections.find((s) => s.id === activeSection) ?? visibleSections[0];
   const activeSectionTree = activeConfig ? tree[activeConfig.id] : null;
 
+  const onStructure2 =
+    pathname === "/operations-2" || pathname.startsWith("/operations-2/");
+  const structureHomeHref =
+    flattenNavTree(tree.common)[0]?.href ?? "/operations/yield-overview";
+  const showStructureSwitch = activeConfig?.id === "common";
+
   return (
     <aside
       className={cn(
@@ -597,6 +630,15 @@ export const DesktopSidebar = memo(function DesktopSidebar() {
           dark={navDark}
           openGroups={openGroups}
           onToggleGroup={toggleGroup}
+          structureSwitchHref={
+            showStructureSwitch
+              ? onStructure2
+                ? structureHomeHref
+                : "/operations-2"
+              : null
+          }
+          structureSwitchLabel={t("nav.structureSwitch")}
+          structureActive={onStructure2}
         />
       ) : null}
     </aside>

@@ -32,5 +32,10 @@
   "nav.hint.users": "管理用户与角色。",
   "nav.hint.companies": "管理公司主数据。",
   "nav.hint.settings": "配置 A Admin 权限与策略。",
-  "nav.hint.audit": "查看审计日志。"
+  "nav.hint.audit": "查看审计日志。",
+  "nav.structureSwitch": "切换运营结构",
+  "structure2.title": "运营结构 2",
+  "structure2.desc": "第二套业务运营结构。详细结构稍后定义，目前沿用现有运营结构的 UI。",
+  "structure2.back": "返回当前运营结构",
+  "structure2.note": "业务结构确定后，本页面将承载第二套运营结构（角色、菜单、数据流）。"
 }

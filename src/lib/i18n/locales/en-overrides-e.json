@@ -32,5 +32,10 @@
   "nav.hint.users": "Manage users and roles.",
   "nav.hint.companies": "Manage company master data.",
   "nav.hint.settings": "Configure A Admin permissions and policies.",
-  "nav.hint.audit": "View the audit log."
+  "nav.hint.audit": "View the audit log.",
+  "nav.structureSwitch": "Switch operating structure",
+  "structure2.title": "Operating Structure 2",
+  "structure2.desc": "Second business operating structure. The detailed structure will be defined later; for now it follows the current operating structure's UI.",
+  "structure2.back": "Back to current operating structure",
+  "structure2.note": "Once the business structure is confirmed, this screen will host the second operating structure (roles, menus, data flow)."
 }
