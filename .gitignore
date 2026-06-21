@@ -17,3 +17,6 @@ npm-debug.log*
 
 # typescript
 *.tsbuildinfo
+
+# agent working docs (local only, not versioned)
+docs/agent/

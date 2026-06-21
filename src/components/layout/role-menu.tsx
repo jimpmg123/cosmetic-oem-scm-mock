@@ -8,21 +8,47 @@ import { ALL_ROLES, useRole } from "@/components/providers/role-provider";
 import type { UserRole } from "@/lib/mock/data";
 import { cn } from "@/lib/utils";
 
-const ROLE_KEYS = {
+const ROLE_KEYS: Record<UserRole, string> = {
+  executive: "role.executive",
   super_admin: "role.super_admin",
   a_admin: "role.a_admin",
   b_admin: "role.b_admin",
   b_staff: "role.b_staff",
   warehouse: "role.warehouse",
-} as const;
+};
 
-const ROLE_LEVEL_KEYS = {
+const ROLE_LEVEL_KEYS: Record<UserRole, string> = {
+  executive: "role.level.executive",
   super_admin: "role.level.4",
   a_admin: "role.level.a_admin",
   b_admin: "role.level.3",
   b_staff: "role.level.2",
   warehouse: "role.level.mobile",
-} as const;
+};
+
+const CHINA_SUPPLY_ROLE_LABELS: Partial<Record<UserRole, string>> = {
+  executive: "Executive",
+  super_admin: "APPLICELL Korea Super Admin",
+  a_admin: "APPLICELL Korea Manufacturing Admin",
+  b_admin: "APPLICELL China Admin",
+  b_staff: "APPLICELL China Logistics",
+};
+
+export const CHINA_SUPPLY_ROLE_OPTIONS: UserRole[] = [
+  "executive",
+  "super_admin",
+  "a_admin",
+  "b_admin",
+  "b_staff",
+];
+
+export const CHINA_SUPPLY_ROLE_LEVEL_LABELS: Partial<Record<UserRole, string>> = {
+  executive: "Executive Overview",
+  super_admin: "Korea Full Control",
+  a_admin: "Korea Manufacturing Ops",
+  b_admin: "China Operating Company",
+  b_staff: "China Logistics Ops",
+};
 
 export function getRoleLevelKey(role: UserRole) {
   return ROLE_LEVEL_KEYS[role];
@@ -39,10 +65,42 @@ export function RoleMenu({
   const { t } = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const isChinaSupplyMode =
+    pathname === "/operations-2" || pathname.startsWith("/operations-2/");
+  const roleOptions = isChinaSupplyMode ? CHINA_SUPPLY_ROLE_OPTIONS : ALL_ROLES;
+  const currentRoleLabel =
+    isChinaSupplyMode && CHINA_SUPPLY_ROLE_LABELS[role]
+      ? CHINA_SUPPLY_ROLE_LABELS[role]
+      : t(ROLE_KEYS[role]);
 
   function switchRole(next: UserRole) {
     if (next === role) return;
     setRole(next);
+
+    if (isChinaSupplyMode) {
+      if (next === "executive") {
+        if (pathname !== "/operations-2/executive") {
+          router.push("/operations-2/executive");
+        }
+        return;
+      }
+
+      if (next === "super_admin" || next === "a_admin") {
+        if (pathname === "/operations-2/executive") {
+          router.push("/operations-2");
+        }
+        return;
+      }
+
+      if (
+        (next === "b_admin" || next === "b_staff") &&
+        !pathname.startsWith("/operations-2/inbound")
+      ) {
+        router.push("/operations-2/inbound/inspection");
+      }
+      return;
+    }
+
     if (next === "warehouse" && !pathname.startsWith("/m")) {
       router.push("/m");
       return;
@@ -69,7 +127,7 @@ export function RoleMenu({
           aria-label={t("role.switch")}
         >
           <span className={variant === "sidebar" ? "text-xs font-bold leading-none" : undefined}>
-            {t(ROLE_KEYS[role])}
+            {currentRoleLabel}
           </span>
           <MaterialIcon
             name="expand_more"
@@ -92,7 +150,7 @@ export function RoleMenu({
             {t("role.switch")}
           </DropdownMenu.Label>
           <DropdownMenu.Separator className="my-1 h-px bg-scm-outline-variant" />
-          {ALL_ROLES.map((r) => (
+          {roleOptions.map((r) => (
             <DropdownMenu.Item
               key={r}
               onSelect={() => switchRole(r)}
@@ -102,7 +160,11 @@ export function RoleMenu({
                 role === r && "bg-scm-surface-container-low font-medium",
               )}
             >
-              <span>{t(ROLE_KEYS[r])}</span>
+              <span>
+                {isChinaSupplyMode && CHINA_SUPPLY_ROLE_LABELS[r]
+                  ? CHINA_SUPPLY_ROLE_LABELS[r]
+                  : t(ROLE_KEYS[r])}
+              </span>
               {role === r ? (
                 <MaterialIcon name="check" className="text-scm-secondary text-base" />
               ) : null}

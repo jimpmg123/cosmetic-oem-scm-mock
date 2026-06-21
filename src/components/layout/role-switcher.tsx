@@ -4,6 +4,7 @@ import { ALL_ROLES, useRole } from "@/components/providers/role-provider";
 import { useLocale } from "@/components/providers/locale-provider";
 
 const ROLE_KEYS = {
+  executive: "role.executive",
   super_admin: "role.super_admin",
   a_admin: "role.a_admin",
   b_admin: "role.b_admin",

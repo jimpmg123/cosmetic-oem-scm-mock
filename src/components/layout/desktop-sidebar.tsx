@@ -1,10 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { NavHintTooltip } from "@/components/layout/nav-hint-tooltip";
-import { RoleMenu, getRoleLevelKey } from "@/components/layout/role-menu";
+import {
+  CHINA_SUPPLY_ROLE_LEVEL_LABELS,
+  RoleMenu,
+  getRoleLevelKey,
+} from "@/components/layout/role-menu";
 import { useSidebarLayout } from "@/components/layout/sidebar-layout-context";
 import { HubBrandIcon } from "@/components/ui/hub-brand-icon";
 import { MaterialIcon } from "@/components/ui/material-icon";
@@ -14,6 +19,7 @@ import { navHintKey } from "@/lib/navigation-hints";
 import {
   NAV_SECTIONS,
   flattenNavTree,
+  getChinaSupplyNavTree,
   getNavTree,
   isNavItemActive,
   type NavItem,
@@ -461,7 +467,14 @@ export const DesktopSidebar = memo(function DesktopSidebar() {
   const { t } = useLocale();
   const { detailCollapsed, toggleDetailCollapsed, navDark, toggleNavDark } =
     useSidebarLayout();
-  const tree = useMemo(() => getNavTree(role), [role]);
+  const legacyTree = useMemo(() => getNavTree(role), [role]);
+  const onStructure2 =
+    pathname === "/operations-2" || pathname.startsWith("/operations-2/");
+  const tree = useMemo(
+    () => (onStructure2 ? getChinaSupplyNavTree(role) : legacyTree),
+    [legacyTree, onStructure2, role],
+  );
+  const effectiveNavDark = onStructure2 ? false : navDark;
 
   const visibleSections = useMemo(
     () =>
@@ -538,17 +551,21 @@ export const DesktopSidebar = memo(function DesktopSidebar() {
     visibleSections.find((s) => s.id === activeSection) ?? visibleSections[0];
   const activeSectionTree = activeConfig ? tree[activeConfig.id] : null;
 
-  const onStructure2 =
-    pathname === "/operations-2" || pathname.startsWith("/operations-2/");
   const structureHomeHref =
-    flattenNavTree(tree.common)[0]?.href ?? "/operations/yield-overview";
-  const showStructureSwitch = activeConfig?.id === "common";
+    flattenNavTree(legacyTree.common)[0]?.href ?? "/operations/yield-overview";
+  const showStructureSwitch =
+    activeConfig?.id === "common" &&
+    (role === "super_admin" || role === "a_admin");
+  const roleLevelLabel =
+    onStructure2 && CHINA_SUPPLY_ROLE_LEVEL_LABELS[role]
+      ? CHINA_SUPPLY_ROLE_LEVEL_LABELS[role]
+      : labels[getRoleLevelKey(role)];
 
   return (
     <aside
       className={cn(
         "fixed left-0 top-0 z-20 flex h-full overflow-hidden border-r transition-colors duration-300",
-        navDark
+        effectiveNavDark
           ? "border-nav-dark-border bg-nav-dark-bg"
           : "border-scm-outline-variant bg-scm-surface-lowest",
       )}
@@ -556,33 +573,49 @@ export const DesktopSidebar = memo(function DesktopSidebar() {
       <div
         className={cn(
           "flex w-16 shrink-0 flex-col items-center border-r py-4",
-          navDark ? "border-nav-dark-border" : "border-scm-outline-variant",
+          effectiveNavDark ? "border-nav-dark-border" : "border-scm-outline-variant",
         )}
       >
-        <button
-          type="button"
-          onClick={toggleNavDark}
-          aria-label={t("nav.themeToggle")}
-          title={t("nav.themeToggle")}
-          className={cn(
-            "mb-3 flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg px-1 transition-colors",
-            navDark
-              ? "hover:bg-nav-dark-hover"
-              : "hover:bg-scm-surface-container",
-          )}
-        >
-          <HubBrandIcon
+        {onStructure2 ? (
+          <div
+            className="mb-3 flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-scm-outline-variant bg-white"
+            aria-label="APPLICELL"
+            title="APPLICELL"
+          >
+            <Image
+              src="/brand/applicell-logo.png"
+              alt="APPLICELL"
+              width={40}
+              height={40}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={toggleNavDark}
+            aria-label={t("nav.themeToggle")}
+            title={t("nav.themeToggle")}
             className={cn(
-              "h-[18px] w-[27px] transition-colors duration-300",
-              navDark ? "text-nav-dark-text" : "text-scm-primary",
+              "mb-3 flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg px-1 transition-colors",
+              effectiveNavDark
+                ? "hover:bg-nav-dark-hover"
+                : "hover:bg-scm-surface-container",
             )}
-          />
-        </button>
+          >
+            <HubBrandIcon
+              className={cn(
+                "h-[18px] w-[27px] transition-colors duration-300",
+                effectiveNavDark ? "text-nav-dark-text" : "text-scm-primary",
+              )}
+            />
+          </button>
+        )}
 
         <div
           className={cn(
             "mb-2 h-px w-8",
-            navDark ? "bg-nav-dark-border" : "bg-scm-outline-variant",
+            effectiveNavDark ? "bg-nav-dark-border" : "bg-scm-outline-variant",
           )}
         />
 
@@ -596,7 +629,7 @@ export const DesktopSidebar = memo(function DesktopSidebar() {
                 icon={section.icon}
                 label={labels[section.titleKey]}
                 onClick={() => setActiveSection(section.id)}
-                dark={navDark}
+                dark={effectiveNavDark}
               />
             ))}
         </div>
@@ -612,7 +645,7 @@ export const DesktopSidebar = memo(function DesktopSidebar() {
               icon={section.icon}
               label={labels[section.titleKey]}
               onClick={() => setActiveSection(section.id)}
-              dark={navDark}
+              dark={effectiveNavDark}
             />
           ))}
       </div>
@@ -626,8 +659,8 @@ export const DesktopSidebar = memo(function DesktopSidebar() {
           hints={hints}
           collapsed={detailCollapsed}
           onToggleCollapse={toggleDetailCollapsed}
-          roleLevelLabel={labels[getRoleLevelKey(role)]}
-          dark={navDark}
+          roleLevelLabel={roleLevelLabel}
+          dark={effectiveNavDark}
           openGroups={openGroups}
           onToggleGroup={toggleGroup}
           structureSwitchHref={

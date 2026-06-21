@@ -19,9 +19,9 @@ export function RoleRouteGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!allowed) {
-      router.replace(getDefaultPathForRole(role));
+      router.replace(getDefaultPathForRole(role, pathname));
     }
-  }, [allowed, role, router]);
+  }, [allowed, pathname, role, router]);
 
   if (!allowed) {
     return (

@@ -21,10 +21,31 @@ export type RouteAccess =
   | "b_admin_receipt"
   | "b_admin_shipments"
   | "b_calendar"
-  | "b_admin_log_history";
+  | "b_admin_log_history"
+  | "executive_overview"
+  | "china_supply_korea"
+  | "china_supply_inbound"
+  | "china_supply_available_stock"
+  | "china_supply_product_view"
+  | "china_supply_issues"
+  | "china_supply_audit"
+  | "china_supply";
 
 const ROUTE_RULES: { prefix: string; access: RouteAccess }[] = [
   { prefix: "/admin/settings", access: "super_only" },
+  { prefix: "/operations-2/executive", access: "executive_overview" },
+  { prefix: "/operations-2/catalog/inbound-view", access: "china_supply_product_view" },
+  { prefix: "/operations-2/catalog", access: "china_supply_korea" },
+  { prefix: "/operations-2/bom", access: "china_supply_korea" },
+  { prefix: "/operations-2/requests", access: "china_supply_korea" },
+  { prefix: "/operations-2/kolmar", access: "china_supply_korea" },
+  { prefix: "/operations-2/manufacturers", access: "china_supply_korea" },
+  { prefix: "/operations-2/inbound/available-stock", access: "china_supply_available_stock" },
+  { prefix: "/operations-2/inbound", access: "china_supply_inbound" },
+  { prefix: "/operations-2/analytics/yield-e2e", access: "china_supply_korea" },
+  { prefix: "/operations-2/analytics/issues", access: "china_supply_issues" },
+  { prefix: "/operations-2/analytics/audit", access: "china_supply_audit" },
+  { prefix: "/operations-2", access: "china_supply" },
   { prefix: "/operations/daily-log/history", access: "b_admin_log_history" },
   { prefix: "/operations/daily-log", access: "b_staff_daily_log" },
   { prefix: "/operations/material-bundles/new", access: "a_planning" },
@@ -81,13 +102,52 @@ export function canAccessRoute(role: UserRole, pathname: string): boolean {
       return role === "b_admin";
     case "b_calendar":
       return ADMIN_OVERSIGHT_ROLES.includes(role) || B_FIELD_INPUT_ROLES.includes(role);
+    case "executive_overview":
+      return role === "executive" || role === "super_admin";
+    case "china_supply_korea":
+      return role === "super_admin" || role === "a_admin";
+    case "china_supply_inbound":
+      return role === "super_admin" || role === "b_admin" || role === "b_staff";
+    case "china_supply_available_stock":
+      return role === "super_admin" || role === "b_admin";
+    case "china_supply_product_view":
+      return role === "super_admin" || role === "b_admin" || role === "b_staff";
+    case "china_supply_issues":
+      return role === "super_admin" || role === "a_admin" || role === "b_admin" || role === "b_staff";
+    case "china_supply_audit":
+      return role === "super_admin" || role === "a_admin" || role === "b_admin";
+    case "china_supply":
+      return role === "super_admin" || role === "a_admin" || role === "b_admin" || role === "b_staff";
     default:
       return true;
   }
 }
 
-export function getDefaultPathForRole(role: UserRole): string {
+function getChinaSupplyDefaultPathForRole(role: UserRole): string {
   switch (role) {
+    case "executive":
+      return "/operations-2/executive";
+    case "b_admin":
+    case "b_staff":
+      return "/operations-2/inbound/inspection";
+    case "super_admin":
+    case "a_admin":
+      return "/operations-2";
+    case "warehouse":
+      return "/m";
+    default:
+      return "/operations-2";
+  }
+}
+
+export function getDefaultPathForRole(role: UserRole, pathname?: string): string {
+  if (pathname?.startsWith("/operations-2")) {
+    return getChinaSupplyDefaultPathForRole(role);
+  }
+
+  switch (role) {
+    case "executive":
+      return "/operations-2/executive";
     case "a_admin":
       return "/operations/material-shipment";
     case "b_staff":

@@ -1,4 +1,5 @@
 export type UserRole =
+  | "executive"
   | "super_admin"
   | "a_admin"
   | "b_admin"
