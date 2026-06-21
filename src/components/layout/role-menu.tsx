@@ -35,7 +35,6 @@ const CHINA_SUPPLY_ROLE_LABELS: Partial<Record<UserRole, string>> = {
 };
 
 export const CHINA_SUPPLY_ROLE_OPTIONS: UserRole[] = [
-  "executive",
   "super_admin",
   "a_admin",
   "b_admin",
@@ -67,7 +66,11 @@ export function RoleMenu({
   const pathname = usePathname();
   const isChinaSupplyMode =
     pathname === "/operations-2" || pathname.startsWith("/operations-2/");
-  const roleOptions = isChinaSupplyMode ? CHINA_SUPPLY_ROLE_OPTIONS : ALL_ROLES;
+  const roleOptions = isChinaSupplyMode
+    ? role === "executive"
+      ? (["executive"] satisfies UserRole[])
+      : CHINA_SUPPLY_ROLE_OPTIONS
+    : ALL_ROLES;
   const currentRoleLabel =
     isChinaSupplyMode && CHINA_SUPPLY_ROLE_LABELS[role]
       ? CHINA_SUPPLY_ROLE_LABELS[role]
