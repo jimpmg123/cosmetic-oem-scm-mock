@@ -287,6 +287,7 @@ Production_Tracking/
 | 문서 | 내용 |
 |------|------|
 | `docs/china-supply-flow/web-structure.md` | 운영 구조 2의 공급 흐름과 메뉴 초안 |
+| `docs/china-supply-flow/page-role-matrix.md` | 운영 구조 2의 페이지별 역할·표시·액션 기준 |
 | `docs/china-supply-flow/executive-summary-spec.md` | Executive / 경영진용 overview 화면 설계 |
 | `docs/pages/` | 레거시 화면별 스펙 |
 | `docs/domain/` | 레거시 수율, E2E, 물량 개념 |
