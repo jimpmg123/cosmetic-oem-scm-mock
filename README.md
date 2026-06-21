@@ -1,169 +1,288 @@
-# Production Tracking
+# APPLICELL China Supply Flow Mock
 
-화장품 **위탁생산(A → B → C)** 구간에서 물량·달성도·수율·대사를 한 화면에서 보는 **웹 어드민 UI 목업**입니다.  
-NetSuite 위탁생산 + FBA 입고 대사 개념을 사내 ERP/Operations 형태로 시연하기 위한 프로토타입이며, **백엔드·DB 없이** `src/lib/mock/` 정적 데이터와 클라이언트 계산으로 동작합니다.
+APPLICELL 중국 사업 운영 구조를 검증하기 위한 **Next.js ERP/Operations UI 목업**입니다.
 
----
+현재 메인 스코프는 기존 `A -> B -> C` 위탁생산 모델이 아니라, 아래 실제 사업 흐름입니다.
 
-## GitHub 저장소 설정 (복사용)
+```text
+APPLICELL Korea
+  -> Kolmar China
+  -> APPLICELL China
+  -> 공식 유통 채널
+  -> 소비자
+```
 
-| 항목 | 권장 내용 |
-|------|-----------|
-| **Repository name** | `production-tracking` |
-| **Description (EN)** | Next.js UI mock for cosmetic OEM flow (Brand A → Manufacturer B → Warehouse C): material bundles, C-verified yield vs grant, E2E, reconciliation. |
-| **Description (KO)** | 화장품 위탁생산 A→B→C 물량 추적·수율(C검증)·E2E·대사 UI 목업 (Next.js, TypeScript) |
-
-대안 이름: `cosmetic-oem-scm-mock`, `ab-material-flow-tracking`
-
-**Topics (선택):** `nextjs`, `typescript`, `scm`, `mockup`, `cosmetics`, `supply-chain`, `dashboard`
+이 저장소는 백엔드, DB, 인증 없이 `src/lib/mock/`의 정적 데이터와 클라이언트 계산으로 동작하는 프로토타입입니다. 기존 A/B/C 운영 화면은 레거시 모델로 보존하고, 신규 구조는 `/operations-2` 아래에서 별도로 실험합니다.
 
 ---
 
-## 무엇을 다루나
+## 현재 구현 범위
 
-| 역할 | 소속 | 하는 일 |
-|------|------|---------|
-| Super / Hyper Admin | A (브랜드) | 자재 묶음·기간 지시·원자재 출하·대사·마감 |
-| B Admin / Staff | B (위탁 생산) | 생산 일지·완제품 출하·입고 확인 |
-| Warehouse | C (창고) | 모바일 입고·QR 스캔(mock) |
+### 1차 범위
 
-### 핵심 도메인
+현재 구현은 제조·공급 관리까지만 다룹니다.
 
-- **Material Bundle (자재 묶음)** — A가 B에 보낸 생산 가능 분량, 목표, grant(발송 기준), 사용 기한
-- **Period Directive (기간 지시)** — “~일까지 y개” 식의 기간별 목표·코멘트
-- **제품 카탈로그** — 브랜드 라인·제품·BOM·위탁사(B) 필터
-- **재료 요청** — A 통지 출하, B 생산 배치, B 단품 보충
+```text
+APPLICELL Korea
+  -> 제조 요청 / 제품·BOM 기준 관리
 
-### 지표 용어 (앱·문서 통일)
+Kolmar China
+  -> 외부 제조처
+  -> 생산 결과, LOT/QC, 완제품 출고 자료의 기록 대상
 
-| 용어 | 의미 | 계산 (요약) |
-|------|------|-------------|
-| **수율** | A 발송(grant) 대비 **C가 검증한 입고** — B 주장 생산 아님 | `C입고 ÷ grant` (마감 후) |
-| **E2E** | A **목표** 대비 C 입고 (End-to-End) — **수율이라 부르지 않음** | `C입고 ÷ 목표` (마감 후) |
-| **달성도** | 진행 중 “얼마나 왔나” | 예: `C입고 ÷ 목표`, `생산 ÷ 목표` |
-| **로스 여유** | 출하·BOM 산출 시 grant 여유 % | 수율과 별개 |
+APPLICELL China
+  -> 입고 검수
+  -> 입고 차이 / 보류
+  -> 판매 가능 재고 전환
+```
 
-상세: [`docs/domain/yield-and-progress.md`](docs/domain/yield-and-progress.md) · 에이전트용: [`docs/agent/agent-context.md`](docs/agent/agent-context.md)
+### 2차 이후 범위
+
+아래는 아직 실제 데이터 모델이 연결되지 않은 다음 단계입니다.
+
+- 중국 사업자용 홍보 / 주문 / 결제 ERP
+- 공식 채널 공급, 거래처 관리, 소비자 주문
+- 검증 판매 기준 정산
+- QR / serial 기반 정품 확인과 이동 경로 검증
+- 외부 플랫폼 가격·채널 이탈 감시
+- 반품, 취소, 정산 보류, 클로백
+- 채널 재고 적체와 비정상 구매 탐지
+
+---
+
+## 핵심 설계 원칙
+
+### Kolmar China는 로그인 역할이 아니다
+
+Kolmar China는 내부 사용자가 아니라 **외부 제조처 / 발주 대상 / 생산 결과 기록 대상**입니다.
+
+1차 구조에서는 APPLICELL Korea 운영자가 콜마로부터 받은 생산·출고 자료를 입력하고, APPLICELL China가 실제 입고 수량과 상태를 검수합니다.
+
+### 한국과 중국의 책임을 분리한다
+
+- APPLICELL Korea: 제품, BOM, 제조 요청, 콜마 생산·출고 자료 관리
+- APPLICELL China: 실제 입고 검수, 입고 차이 처리, 판매 가능 재고 전환
+- China Logistics: 현장 검수와 증빙 등록 중심
+- China Admin: 보류 확정과 판매 가능 재고 전환
+
+### 용어는 공식 유통 관리 기준으로 쓴다
+
+중국 사업 구조에서는 위험한 용어를 피하고, 시스템에는 아래 표현을 사용합니다.
+
+| 피해야 할 표현 | 시스템 표현 |
+|----------------|-------------|
+| 상위 / 하위 | APPLICELL Korea / APPLICELL China / 거래처 / 공식 채널 |
+| 모집 / 추천 | 거래처 등록 / 채널 확장 |
+| 추천수당 / 조직 보상 | 정산 / 판매 인센티브 |
+| 하위 실적 | 검증 판매 / 공식 채널 판매 실적 |
+| 조직 | 채널 / 거래처 / 운영 법인 |
+
+---
+
+## 역할 구조
+
+운영 구조 2(`/operations-2`)에서는 다음 역할을 사용합니다.
+
+| 역할 | 목적 | 접근 범위 |
+|------|------|-----------|
+| Executive | 회장님 / 최고경영진 overview | 경영 요약 |
+| APPLICELL Korea Super Admin | 전체 운영 관리 | 운영2 전체, 예외 처리 |
+| APPLICELL Korea Manufacturing Admin | 한국 제조 운영 실무 | 제품·BOM, 제조 요청, 콜마 자료, 수율/E2E |
+| APPLICELL China Admin | 중국 운영 관리자 | 입고 검수, 보류 확정, 판매 가능 재고 전환 |
+| APPLICELL China Logistics | 중국 물류 실무 | 입고 검수, 증빙 업로드, 입고 차이 등록 |
+
+레거시 화면에는 기존 `A Super Admin`, `A Admin`, `B Admin`, `B Staff`, `Warehouse (C)` 역할이 남아 있습니다.
 
 ---
 
 ## 주요 화면
 
-- 대시보드 · **생산·입고 현황** · 자재 묶음 · 생산 캘린더 · 일별 생산 일지
-- **대사** (B↔C 입고, 기간 지시 달성, 묶음 수율·E2E)
-- **카탈로그** (라인·제품·위탁사) · A 통지 출하 · B 재료 요청
-- C 모바일: 입고 목록 · QR 스캔(mock) · 입고 확인
+| URL | 설명 |
+|-----|------|
+| `/operations-2/executive` | 회장님 / 최고경영진용 경영 요약 |
+| `/operations-2` | 중국 제조·공급 현황 |
+| `/operations-2/catalog` | 제품 카탈로그 |
+| `/operations-2/bom` | BOM 기준 |
+| `/operations-2/requests` | 제조 요청 목록 |
+| `/operations-2/kolmar/production` | 콜마 생산 결과 등록 |
+| `/operations-2/kolmar/lot-qc` | LOT / QC 자료 |
+| `/operations-2/kolmar/shipments` | 완제품 출고 등록 |
+| `/operations-2/inbound/inspection` | AP China 입고 검수 |
+| `/operations-2/inbound/holds` | 입고 차이 / 보류 |
+| `/operations-2/inbound/available-stock` | 판매 가능 재고 전환 |
+| `/operations-2/analytics/yield-e2e` | 수율 / E2E |
+| `/operations-2/analytics/issues` | 제조 이슈 |
+| `/operations-2/analytics/audit` | 감사 로그 |
+| `/operations-2/manufacturers/kolmar-china` | 제조처 자료 관리 |
 
-상단 **역할 스위처**로 메뉴·권한을 전환해 데모합니다.
+아직 상세 도메인이 확정되지 않은 화면은 mockup placeholder로 연결되어 있습니다.
+
+---
+
+## 회장님 Overview
+
+`/operations-2/executive`는 실무 입력 화면이 아니라 경영 판단용 요약 화면입니다.
+
+현재 화면은 다음 5개 블록으로 구성됩니다.
+
+| 블록 | 목적 |
+|------|------|
+| 재무 결과 | 계획 대비 매출, 영업이익, 배당 가능액, 자금 흐름 |
+| 성장 궤적 | 월 판매 세트 계획, 거래처·지역 확장, 재구매율 |
+| 공급 건전성 | 제조 진행, 콜마 출고, AP China 입고, 입고 보류 |
+| 채널 무결성 / 리스크 | 검증 판매율, 채널 재고 적체, QR 지역 이탈, 정산 보류 |
+| 컴플라이언스 신호 | 검증 판매 기반 정산, 미해결 분쟁, 단일 제조처 의존 |
+
+현재 mock 데이터로 산출 가능한 값은 공급 건전성 중심입니다. 주문·결제·정산·검증 판매 데이터는 2차 모델에서 연결합니다.
+
+---
+
+## 레거시 모델
+
+기존 A/B/C 위탁생산 화면은 삭제하지 않고 보존합니다.
+
+| URL | 설명 |
+|-----|------|
+| `/operations/yield-overview` | 레거시 생산·입고 현황 |
+| `/operations/material-bundles` | 자재 물량 |
+| `/operations/production-calendar` | 생산 캘린더 |
+| `/operations/catalog` | 레거시 제품 카탈로그 |
+| `/operations/reconciliation` | 레거시 대사 |
+| `/m` | 창고 모바일 mock |
+
+좌상단 `운영` 옆 전환 버튼으로 기존 구조와 운영 구조 2를 오갈 수 있습니다.
 
 ---
 
 ## 기술 스택
 
-- **Next.js 15** (App Router) · **React 19** · **TypeScript**
-- **Tailwind CSS 4** · Radix UI · Material Symbols
-- Mock 데이터: `src/lib/mock/` · i18n: `src/lib/i18n/`
+- Next.js 15 App Router
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Radix UI
+- Material Symbols
+- Mock 데이터: `src/lib/mock/`
+- i18n: `src/lib/i18n/`
 
 ---
 
-## 시작하기
+## 실행 방법
 
 ### 요구 사항
 
 - Node.js 20+
 - npm
 
-### 설치 및 실행
+### 설치
 
 ```bash
 git clone https://github.com/jimpmg123/cosmetic-oem-scm-mock.git
-cd production-tracking
+cd cosmetic-oem-scm-mock
 npm install
+```
+
+### 개발 서버
+
+```bash
 npm run dev
 ```
 
-브라우저: **http://localhost:3000**
+브라우저에서 [http://localhost:3000](http://localhost:3000)을 엽니다.
 
-`Internal Server Error (500)` 이 나오면 dev 서버를 모두 종료한 뒤:
+개발 서버 캐시 문제나 500 오류가 있으면:
 
 ```bash
 npm run dev:clean
 ```
 
-### 주요 URL
+---
 
-| URL | 설명 |
-|-----|------|
-| `/dashboard` | 대시보드 |
-| `/operations/yield-overview` | 생산·입고 현황 |
-| `/operations/material-bundles` | 자재 묶음 |
-| `/operations/production-calendar` | 생산 캘린더 (B 회사 필터) |
-| `/operations/catalog` | 통합 카탈로그 |
-| `/operations/reconciliation` | 대사 |
-| `/m` | C 창고 모바일 UI |
-
-### 스크립트
+## 스크립트
 
 | 명령 | 설명 |
 |------|------|
-| `npm run dev` | 개발 서버 (카탈로그 이미지 sync 포함) |
+| `npm run dev` | 개발 서버 실행 |
+| `npm run dev:clean` | `.next` 삭제 후 개발 서버 실행 |
 | `npm run build` | 프로덕션 빌드 |
 | `npm run lint` | ESLint |
-| `npm run sync:catalog-images` | `test_images/` → `public/catalog/` 복사 |
+| `npm run sync:catalog-images` | `test_images/`의 카탈로그 이미지를 `public/catalog/`로 동기화 |
+| `npm run i18n:emit` | locale JSON에서 dictionary 생성 |
 
 ---
 
 ## 프로젝트 구조
 
-```
-production-tracking/
-├── docs/                    # 기획·화면·도메인 문서
-│   ├── PROJECT.md           # 프로젝트 개요
-│   └── domain/              # 수율·묶음·흐름 정의
+```text
+Production_Tracking/
+├── docs/
+│   └── china-supply-flow/
+│       ├── web-structure.md
+│       └── executive-summary-spec.md
+├── public/
+│   ├── brand/
+│   │   └── applicell-logo.png
+│   └── catalog/
 ├── src/
 │   ├── app/
-│   │   ├── (desktop)/       # A/B Admin + ERP (사이드바)
-│   │   └── m/               # C Warehouse 모바일
-│   ├── components/          # UI·묶음·카탈로그 컴포넌트
+│   │   ├── (desktop)/
+│   │   │   ├── operations/
+│   │   │   └── operations-2/
+│   │   └── m/
+│   ├── components/
+│   │   ├── layout/
+│   │   ├── operations/
+│   │   └── ui/
 │   └── lib/
-│       ├── mock/            # Mock 데이터·수율/E2E 계산
-│       └── i18n/            # ko / en / zh
-├── test_data/               # 시드 JSON (제품·위탁사 등)
-├── test_images/             # 카탈로그 이미지 원본
-└── scripts/                 # 이미지 sync 등
+│       ├── mock/
+│       ├── i18n/
+│       ├── navigation.ts
+│       └── role-access.ts
+├── scripts/
+├── test_data/
+└── test_images/
 ```
 
 ---
 
-## Mock 데이터
+## 주요 코드 위치
 
-- 위탁사 3곳: `test_data/cosmetic_manufacturers_json/`
-- 브랜드·제품·BOM: `test_data/cosmetic_ingredients_json/` (Lumiara, Verdena, Aevora 등)
-- 자재 묶음·지시·일지: `src/lib/mock/material-bundles.ts` 등
-
-예시 묶음 `MB-2026-001`: 목표 1,000 · grant 1,100 · Yunhua BioLab
-
----
-
-## 문서
-
-| 문서 | 내용 |
+| 파일 | 역할 |
 |------|------|
-| [`docs/PROJECT.md`](docs/PROJECT.md) | 목적·역할·로드맵 |
-| [`docs/domain/yield-and-progress.md`](docs/domain/yield-and-progress.md) | 수율 · E2E · 달성도 |
-| [`docs/pages/`](docs/pages/) | 화면별 스펙 |
-| [`docs/README.md`](docs/README.md) | 문서 인덱스 |
+| `src/app/(desktop)/operations-2/page.tsx` | 운영 구조 2 제조·공급 현황 |
+| `src/app/(desktop)/operations-2/executive/page.tsx` | Executive Overview |
+| `src/app/(desktop)/operations-2/[...slug]/page.tsx` | 운영2 하위 메뉴 placeholder |
+| `src/components/layout/desktop-sidebar.tsx` | 사이드바, 운영 구조 전환, 운영2 로고 |
+| `src/components/layout/role-menu.tsx` | 역할 전환 메뉴 |
+| `src/components/operations/role-route-guard.tsx` | 역할별 라우트 가드 |
+| `src/lib/navigation.ts` | 레거시 / 운영2 메뉴 트리 |
+| `src/lib/role-access.ts` | 역할별 라우트 접근 규칙 |
+| `src/lib/mock/material-bundles.ts` | mock 제조·공급 데이터 |
+| `src/lib/mock/yield-metrics.ts` | 수율 / E2E 계산 |
 
 ---
 
 ## 현재 상태
 
-- UI·플로우 **목업 / PoC** 단계
-- 인증·실 DB·API·NetSuite 연동 **미구현**
-- 수치·회사명은 데모용이며 실제 생산 데이터가 아님
+- UI 목업 / PoC 단계
+- 실 인증, DB, API, 결제, 주문, 정산, QR 검증 연동 없음
+- 수치와 회사명 일부는 mock 데이터
+- Kolmar China는 로그인 사용자가 아니라 외부 제조처 기록 대상으로 표현
+- APPLICELL China 이후 유통·판매·정산 구조는 2차 범위
+
+---
+
+## 참고 문서
+
+| 문서 | 내용 |
+|------|------|
+| `docs/china-supply-flow/web-structure.md` | 운영 구조 2의 공급 흐름과 메뉴 초안 |
+| `docs/china-supply-flow/executive-summary-spec.md` | 최고경영진 overview 화면 설계 |
+| `docs/pages/` | 레거시 화면별 스펙 |
+| `docs/domain/` | 레거시 수율, E2E, 물량 개념 |
 
 ---
 
 ## 라이선스
 
-Private / 내부용 프로젝트로 공개 시 조직 정책에 맞는 라이선스를 추가하세요. (현재 저장소에 LICENSE 파일 없음)
+Private / 내부용 프로젝트입니다. 공개 또는 외부 공유 시 조직 정책에 맞는 라이선스를 별도로 추가해야 합니다.
